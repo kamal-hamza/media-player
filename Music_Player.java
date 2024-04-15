@@ -9,84 +9,47 @@ Features:	Play, Stop, Pause, Skip, Repeat songs
 
 */
 
-package Music_Player_Main;
-
-import java.awt.Label;
-import java.io.File;
-import java.util.List;
+package sbj.media_player;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.stage.FileChooser;
+import javafx.scene.control.Label;
 
 public class Music_Player {
+    @FXML
+    private Label welcomeText;
 
     @FXML
-    private Label nowPlaying;
-    private Button openFile;
-    private MediaPlayer MP;
-
-    public Music_Player(Media media) {
-		// TODO Auto-generated constructor stub
-	}
-
-	@FXML
-    void openFile(MouseEvent event) {
-    	FileChooser selectMusic = new FileChooser();
-    	selectMusic.setTitle("Select *.mp3 files.");
-    	
-    	
-    	// Selects multiple files, sorts them alphabetically, needs a data structure for library
-    	// Maybe a library class?
-    	/*
-    	List<File> files = selectMusic.showOpenMultipleDialog(null); // multiple files
-    	if (files!=null) {
-    		// Add data structure for library
-    	}
-    	*/
-    	File file = selectMusic.showOpenDialog(null); // Single File
-    	if (file != null) {
-    		String singleFile = file.toURI().toString();
-    		Media media = new Media(singleFile);
-    		MP = new MediaPlayer(media);
-        	MP.setOnReady(() -> {
-        		nowPlaying.setText("Playing: " + file.getName());
-        	});
-    	}
-    	
+    protected void onPlayButtonClick() {
+        welcomeText.setText("Test Button Functionality - Play");
     }
 
     @FXML
-    void pauseMusic(MouseEvent event) {
-    	MP.pause();
+    protected void onStopButtonClick() {
+        welcomeText.setText("Test Button Functionality - Stop");
     }
 
     @FXML
-    void playMusic(MouseEvent event) {
-    	MP.play();
+    protected void onPauseButtonClick() {
+        welcomeText.setText("Test Button Functionality - Pause");
     }
 
     @FXML
-    void skipBack(MouseEvent event) {
-
+    protected void onBackButtonClick() {
+        welcomeText.setText("Test Button Functionality - Back");
     }
 
     @FXML
-    void skipForward(MouseEvent event) {
-
+    protected void onForwardButtonClick() {
+        welcomeText.setText("Test Button Functionality - Forward");
     }
 
     @FXML
-    void stopMusic(MouseEvent event) {
-    	MP.stop();
+    protected void onRepeatButtonClick() {
+        welcomeText.setText("Test Button Functionality - Repeat");
     }
 
     @FXML
-    void toggleRepeat(MouseEvent event) {
-
+    protected void onOpenButtonClick() {
+        welcomeText.setText("Test Button Functionality - Open");
     }
-
 }
