@@ -1,1 +1,4 @@
-/bin/
+# Ignore all files except the src and tests folders
+*
+!src/
+!tests/
