@@ -11,45 +11,94 @@ Features:	Play, Stop, Pause, Skip, Repeat songs
 
 package sbj.media_player;
 
+import java.io.File;
+
 import javafx.fxml.FXML;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Label;
+import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 public class Music_Player {
     @FXML
-    private Label welcomeText;
+    private Label buttomStatusText;
+
+    @FXML
+    private Label currentlyPlaying;
+
+    @FXML
+    private MediaPlayer MP;
 
     @FXML
     protected void onPlayButtonClick() {
-        welcomeText.setText("Test Button Functionality - Play");
+        MP.play();
+        buttomStatusText.setText("Test Button Functionality - Play");
     }
 
     @FXML
     protected void onStopButtonClick() {
-        welcomeText.setText("Test Button Functionality - Stop");
+        MP.stop();
+        buttomStatusText.setText("Test Button Functionality - Stop");
     }
 
     @FXML
     protected void onPauseButtonClick() {
-        welcomeText.setText("Test Button Functionality - Pause");
+        if (MP.getStatus() == MediaPlayer.Status.PLAYING){
+            MP.pause();
+        } else {
+            MP.play();
+        }
+        buttomStatusText.setText("Test Button Functionality - Pause");
     }
 
     @FXML
     protected void onBackButtonClick() {
-        welcomeText.setText("Test Button Functionality - Back");
+        buttomStatusText.setText("Test Button Functionality - Back");
     }
 
     @FXML
     protected void onForwardButtonClick() {
-        welcomeText.setText("Test Button Functionality - Forward");
+        buttomStatusText.setText("Test Button Functionality - Forward");
     }
 
     @FXML
     protected void onRepeatButtonClick() {
-        welcomeText.setText("Test Button Functionality - Repeat");
+        if(MP.getOnEndOfMedia() == null) {
+            MP.setOnEndOfMedia(new Runnable() {
+                public void run() {
+                    MP.seek(Duration.millis(0));
+                }
+            });
+        } else {
+            MP.setOnEndOfMedia(null);
+        }
+        buttomStatusText.setText("Test Button Functionality - Repeat");
     }
 
     @FXML
     protected void onOpenButtonClick() {
-        welcomeText.setText("Test Button Functionality - Open");
+        //currentlyPlaying.setText("Currently Playing: ");
+        FileChooser selectMusic = new FileChooser();
+    	selectMusic.setTitle("Select *.mp3 files.");
+
+    	// Selects multiple files, sorts them alphabetically, needs a data structure for library
+    	// Maybe a library class?
+    	/*
+    	List<File> files = selectMusic.showOpenMultipleDialog(null); // multiple files
+    	if (files!=null) {
+    		// Add data structure for library
+    	}
+    	*/
+    	File file = selectMusic.showOpenDialog(null); // Single File
+    	if (file != null) {
+    		String singleFile = file.toURI().toString();
+    		Media media = new Media(singleFile);
+    		MP = new MediaPlayer(media);
+        	MP.setOnReady(() -> {
+        		currentlyPlaying.setText("Currently Playing: " + file.getName());
+        	});
+            MP.setAutoPlay(true);
+    	}
     }
 }
