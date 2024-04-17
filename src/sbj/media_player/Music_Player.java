@@ -20,6 +20,8 @@ import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
+import javax.swing.*;
+
 public class Music_Player {
     @FXML
     private Label buttomStatusText;
@@ -28,11 +30,29 @@ public class Music_Player {
     private Label currentlyPlaying;
 
     @FXML
+    private Label playerStatus;
+
+    @FXML
     private MediaPlayer MP;
 
     @FXML
+    protected void onStatusButtonClick() {
+        // This function is for debugging purposes only but could be converted into a status display if desired
+        playerStatus.setText("Media Player Status: " + MP.getStatus().toString());
+    }
+
+    @FXML
     protected void onPlayButtonClick() {
-        MP.play();
+        // If paused, start playing from where it ended
+        // If stopped, start playing from beginning (default behavior)
+        // If playing, reset duration to beginning and start playing
+        if (MP.getStatus() == MediaPlayer.Status.STOPPED || MP.getStatus() == MediaPlayer.Status.PAUSED){
+            MP.play();
+        } else {
+            MP.seek(Duration.millis(0));
+            MP.play();
+        }
+
         buttomStatusText.setText("Test Button Functionality - Play");
     }
 
@@ -46,7 +66,7 @@ public class Music_Player {
     protected void onPauseButtonClick() {
         if (MP.getStatus() == MediaPlayer.Status.PLAYING){
             MP.pause();
-        } else {
+        } else if (MP.getStatus() == MediaPlayer.Status.PAUSED) {
             MP.play();
         }
         buttomStatusText.setText("Test Button Functionality - Pause");
@@ -100,5 +120,20 @@ public class Music_Player {
         	});
             MP.setAutoPlay(true);
     	}
+    }
+
+    // File Menu Actions
+    @FXML
+    protected void onCloseMenuClick() {
+        // Close app when clicked
+        System.exit(0);
+    }
+
+    @FXML
+    protected void onAboutMenuClick() {
+        // Gives an about dialog box which contains the current version
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        JOptionPane.showMessageDialog(frame, "Media Player - Version: 0.1.3");
     }
 }

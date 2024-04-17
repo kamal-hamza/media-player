@@ -16,7 +16,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" text="Close" onAction="#onCloseMenuClick"/>
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -26,7 +26,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" text="About" onAction="#onAboutMenuClick"/>
             </items>
           </Menu>
         </menus>
@@ -35,15 +35,20 @@
    <center>
       <Pane minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-
-                                                                      <Label fx:id="buttomStatusText" layoutX="296.0" layoutY="276.0" />
-            <Label fx:id="currentlyPlaying" layoutX="300.0" layoutY="185.0" />
+             <Label fx:id="buttomStatusText" layoutX="300.0" layoutY="285.0" />
+             <Label fx:id="currentlyPlaying" layoutX="300.0" layoutY="185.0" />
+             <Label fx:id="playerStatus" layoutX="300.0" layoutY="85.0" />
          </children>
       </Pane>
    </center>
    <bottom>
       <StackPane prefHeight="59.0" prefWidth="1002.0" BorderPane.alignment="CENTER">
          <children>
+             <Button alignment="CENTER" mnemonicParsing="false" onAction="#onStatusButtonClick" text="Status">
+               <StackPane.margin>
+                  <Insets right="400.0" />
+               </StackPane.margin>
+            </Button>
             <Button alignment="CENTER" mnemonicParsing="false" onAction="#onPlayButtonClick" text="Play">
                <StackPane.margin>
                   <Insets right="300.0" />
