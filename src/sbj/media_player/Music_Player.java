@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
@@ -119,6 +120,7 @@ public class Music_Player {
         		currentlyPlaying.setText("Currently Playing: " + file.getName());
         	});
             MP.setAutoPlay(true);
+            // bindVolumeSliderToMediaPlayer();
     	}
     }
 
@@ -136,4 +138,23 @@ public class Music_Player {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         JOptionPane.showMessageDialog(frame, "Media Player - Version: 0.1.3");
     }
+
+    //Implementation for the volume scroll bar but has bugs (volume mutes 
+    // when slider is dragged all the way to the left, 
+    // but does not appear to increase or decrease volume) will fix later
+
+  /*  @FXML
+    protected void bindVolumeSliderToMediaPlayer() {
+        volumeSlider.valueProperty().bindBidirectional(MP.volumeProperty());
+    }
+   
+    @FXML
+    protected void onVolumeScrollDrag() {
+        volumeSlider.valueProperty().addListener((ov, oldValue, newValue) -> {
+               if (volumeSlider.isValueChanging()) {
+                   MP.setVolume(volumeSlider.getValue());
+               }
+        });
+    } */ 
+
 }
