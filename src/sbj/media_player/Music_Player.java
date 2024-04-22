@@ -12,6 +12,17 @@ Features:	Play, Stop, Pause, Skip, Repeat songs
 package sbj.media_player;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.FileInputStream;
+
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.mp3.Mp3Parser;
+import org.apache.tika.sax.BodyContentHandler;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
 
 import javafx.fxml.FXML;
 import javafx.scene.media.Media;
@@ -24,6 +35,39 @@ import javafx.util.Duration;
 import javax.swing.*;
 
 public class Music_Player {
+    @FXML
+    private String composer;
+
+    @FXML
+    private String genre;
+
+    @FXML
+    private String artist;
+
+    @FXML
+    private String album;
+
+    @FXML
+    private String title;
+
+    @FXML
+    private Label composerLabel;
+
+    @FXML
+    private Label genreLabel;
+
+    @FXML
+    private Label artistLabel;
+
+    @FXML
+    private Label albumLabel;
+
+    @FXML
+    private Label titleLabel;
+
+    @FXML
+    private File currentFile;
+    
     @FXML
     private Label buttomStatusText;
 
@@ -38,8 +82,23 @@ public class Music_Player {
 
     @FXML
     protected void onStatusButtonClick() {
-        // This function is for debugging purposes only but could be converted into a status display if desired
-        playerStatus.setText("Media Player Status: " + MP.getStatus().toString());
+        if (MP != null) {
+            // This function is for debugging purposes only but could be converted into a status display if desired
+            playerStatus.setText("Media Player Status: " + MP.getStatus().toString());
+        }
+        else {
+            playerStatus.setText("Media Player Status: No media file is selected");
+        }
+    }
+
+    // Creating a new function to display the metadata for mp3 files, wil implement a panel for displaying info later
+    @FXML
+    protected void onInfoButtonClick() {
+        composerLabel.setText(composer);
+        genreLabel.setText(genre);
+        artistLabel.setText(artist);
+        albumLabel.setText(album);
+        titleLabel.setText(title);
     }
 
     @FXML
@@ -111,13 +170,31 @@ public class Music_Player {
     		// Add data structure for library
     	}
     	*/
-    	File file = selectMusic.showOpenDialog(null); // Single File
-    	if (file != null) {
-    		String singleFile = file.toURI().toString();
+    	File currentFile = selectMusic.showOpenDialog(null); // Single File
+    	if (currentFile != null) {
+    		String singleFile = currentFile.toURI().toString();
     		Media media = new Media(singleFile);
     		MP = new MediaPlayer(media);
+            // Getting metadata for mp3 file
+            try {
+                InputStream input = new FileInputStream(currentFile);
+                ContentHandler handler = new BodyContentHandler();
+                Metadata metadata = new Metadata();
+                ParseContext parseCtx = new ParseContext();
+                Mp3Parser mp3Parser = new Mp3Parser();
+                mp3Parser.parse(input, handler, metadata, parseCtx);
+                input.close();
+                this.title = metadata.get("title");
+                this.artist = metadata.get("xmpDM:artist");
+                this.album = metadata.get("xmpDM:album");
+                this.genre = metadata.get("xmpDM:genre");
+                this.composer = metadata.get("xmpDM:composer");
+            } catch (IOException | SAXException | TikaException e) {
+                System.out.println("Error");
+            }
+            // Ends here
         	MP.setOnReady(() -> {
-        		currentlyPlaying.setText("Currently Playing: " + file.getName());
+        		currentlyPlaying.setText("Currently Playing: " + currentFile.getName());
         	});
             MP.setAutoPlay(true);
             // bindVolumeSliderToMediaPlayer();

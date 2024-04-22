@@ -12,6 +12,7 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane minHeight="650.0" minWidth="600.0" prefHeight="442.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sbj.media_player.Music_Player">
    <top>
@@ -38,16 +39,28 @@
    <center>
       <Pane minHeight="200.0" minWidth="200.0" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-             <Label fx:id="buttomStatusText" layoutX="300.0" layoutY="285.0" />
-             <Label fx:id="currentlyPlaying" layoutX="300.0" layoutY="185.0" />
-             <Label fx:id="playerStatus" layoutX="300.0" layoutY="85.0" />
+            <VBox spacing="10" style="-fx-padding: 10;">
+               <Label fx:id="composerLabel" text="Composer" />
+               <Label fx:id="genreLabel" text="Genre" />
+               <Label fx:id="artistLabel" text="Artist" />
+               <Label fx:id="albumLabel" text="Album" />
+               <Label fx:id="titleLabel" text="Title" />
+            </VBox>
+            <Label fx:id="buttomStatusText" layoutX="300.0" layoutY="285.0" />
+            <Label fx:id="currentlyPlaying" layoutX="300.0" layoutY="185.0" />
+            <Label fx:id="playerStatus" layoutX="300.0" layoutY="85.0" />
          </children>
       </Pane>
    </center>
    <bottom>
       <StackPane prefHeight="59.0" prefWidth="1002.0" BorderPane.alignment="CENTER">
          <children>
-             <Button alignment="CENTER" mnemonicParsing="false" onAction="#onStatusButtonClick" text="Status">
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#onInfoButtonClick" text="Music Info">
+               <StackPane.margin>
+                  <Insets right="625.0" />
+               </StackPane.margin>
+            </Button>
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#onStatusButtonClick" text="Status">
                <StackPane.margin>
                   <Insets right="450.0" />
                </StackPane.margin>
