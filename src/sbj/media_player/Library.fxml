@@ -16,11 +16,26 @@
 <?import javafx.scene.layout.HBox?>
 
 <BorderPane minHeight="650.0" minWidth="600.0" prefHeight="442.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sbj.media_player.Library_Controller">
+    <top>
+        <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+            
+        </HBox>
+        <VBox spacing="10" style="-fx-padding: 10;">
+               <Label fx:id="composerLabel" text="Composer" />
+               <Label fx:id="genreLabel" text="Genre" />
+               <Label fx:id="artistLabel" text="Artist" />
+               <Label fx:id="albumLabel" text="Album" />
+               <Label fx:id="titleLabel" text="Title" />
+               <Button prefWidth="150" prefHeight="50" onAction="#onOpenButtonClick" text="Choose Folder"/>
+        </VBox>
+    </top>
     <bottom>
         <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
             <Button prefWidth="150" prefHeight="50" onAction="#viewInfo" text="View Music Info"/>
             <Button prefWidth="150" prefHeight="50" onAction="#play" text="Play"/>
             <Button prefWidth="150" prefHeight="50" onAction="#pause" text="Pause"/>
+            <Button prefWidth="150" prefHeight="50" onAction="#back" text="Back"/>
+            <Button prefWidth="150" prefHeight="50" onAction="#forward" text="Forward"/>
             <Button prefWidth="150" prefHeight="50" onAction="#repeat" text="Repeat"/>
         </HBox>
     </bottom>

@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.DirectoryChooser;
 
 public class Library_Controller {
     @FXML
@@ -47,6 +48,21 @@ public class Library_Controller {
 
     @FXML
     private boolean repeat;
+
+    @FXML
+    private Label composerLabel;
+
+    @FXML
+    private Label genreLabel;
+
+    @FXML
+    private Label artistLabel;
+
+    @FXML
+    private Label albumLabel;
+
+    @FXML
+    private Label titleLabel;
 
     public Library_Controller() {
         library = new ArrayList<File>();
@@ -106,6 +122,38 @@ public class Library_Controller {
     }
 
     @FXML
+    protected void back() {
+        if (MP != null) {
+            if (currentTrackIndex - 1 >= 0) {
+                currentTrackIndex--;
+                play();
+            }
+            else {
+                System.out.println("Cant go back");
+            }
+        }
+        else {
+            System.out.println("Nothing is Playing");
+        }
+    }
+
+    @FXML
+    protected void forward() {
+        if (MP != null) {
+            if (currentTrackIndex + 1 <= library.size() - 1) {
+                currentTrackIndex++;
+                play();
+            }
+            else {
+                System.out.println("Cant go forward");
+            }
+        }
+        else {
+            System.out.println("Nothing is Playing");
+        }
+    }
+
+    @FXML
     protected void viewInfo() {
         File file = library.get(currentTrackIndex);
         // Getting metadata for mp3 file
@@ -125,6 +173,29 @@ public class Library_Controller {
         } catch (IOException | SAXException | TikaException e) {
             System.out.println("Error");
         }
+        titleLabel.setText(title);
+        artistLabel.setText(artist);
+        albumLabel.setText(album);
+        genreLabel.setText(genre);
+        composerLabel.setText(composer);
         // Ends here
+    }
+
+    @FXML
+    protected void onOpenButtonClick() {
+        DirectoryChooser directory = new DirectoryChooser();
+        directory.setTitle("Select Folder with mp3 files");
+        File currentDirectory = directory.showDialog(null);
+        if (currentDirectory != null) {
+            // Get the list of files inside the folder
+            File[] files = currentDirectory.listFiles();
+            // Add all mp3 files to the library
+            for (File file : files) {
+                if (file.getName().endsWith(".mp3")) {
+                    System.out.println(file);
+                    addFile(file);
+                }
+            }
+        }
     }
 }
