@@ -31,6 +31,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import javafx.scene.control.Button;
 
 import javax.swing.*;
 
@@ -79,6 +80,12 @@ public class Music_Player {
 
     @FXML
     private MediaPlayer MP;
+
+    @FXML 
+    private Slider volumeSlider;
+
+    @FXML
+    private Button repeatButton;
 
     @FXML
     protected void onStatusButtonClick() {
@@ -150,8 +157,10 @@ public class Music_Player {
                     MP.seek(Duration.millis(0));
                 }
             });
+            repeatButton.setStyle("-fx-background-color: green;");
         } else {
             MP.setOnEndOfMedia(null);
+            repeatButton.setStyle(null);
         }
         buttomStatusText.setText("Test Button Functionality - Repeat");
     }
@@ -175,6 +184,8 @@ public class Music_Player {
     		String singleFile = currentFile.toURI().toString();
     		Media media = new Media(singleFile);
     		MP = new MediaPlayer(media);
+            bindVolumeSliderToMediaPlayer();
+            volumeSlider.setValue(50);
             // Getting metadata for mp3 file
             try {
                 InputStream input = new FileInputStream(currentFile);
@@ -197,7 +208,6 @@ public class Music_Player {
         		currentlyPlaying.setText("Currently Playing: " + currentFile.getName());
         	});
             MP.setAutoPlay(true);
-            // bindVolumeSliderToMediaPlayer();
     	}
     }
 
@@ -216,22 +226,19 @@ public class Music_Player {
         JOptionPane.showMessageDialog(frame, "Media Player - Version: 0.1.3");
     }
 
-    //Implementation for the volume scroll bar but has bugs (volume mutes 
-    // when slider is dragged all the way to the left, 
-    // but does not appear to increase or decrease volume) will fix later
-
-  /*  @FXML
+    //Implementation for volume slider
+    @FXML
     protected void bindVolumeSliderToMediaPlayer() {
-        volumeSlider.valueProperty().bindBidirectional(MP.volumeProperty());
+        MP.volumeProperty().bind(volumeSlider.valueProperty().divide(100.0));
     }
    
     @FXML
     protected void onVolumeScrollDrag() {
-        volumeSlider.valueProperty().addListener((ov, oldValue, newValue) -> {
+        volumeSlider.valueProperty().addListener((ov, oldVolume, newVolume) -> {
                if (volumeSlider.isValueChanging()) {
                    MP.setVolume(volumeSlider.getValue());
                }
         });
-    } */ 
+    } 
 
 }

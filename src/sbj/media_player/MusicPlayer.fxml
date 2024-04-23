@@ -125,7 +125,7 @@
                   <Insets right="-123.0" />
                </StackPane.margin>
             </Button>
-            <Button alignment="CENTER" layoutX="491.0" layoutY="27.0" onAction="#onRepeatButtonClick">
+            <Button fx:id="repeatButton" alignment="CENTER" layoutX="491.0" layoutY="27.0" onAction="#onRepeatButtonClick">
                <graphic>
                   <ImageView fitHeight="30" fitWidth="30">
                     <image>
@@ -149,8 +149,7 @@
                   <Insets right="-335.0" />
                </StackPane.margin>
             </Button>
-            <!-- took out the onDragDetected="#onVolumeScrollDrag" out of Slider code for now until logic bug is resolved-->
-            <Slider fx:id="volumeSlider" min="0" max="100" maxWidth="150" maxHeight="10">
+            <Slider fx:id="volumeSlider" min="0.0" max="100.0" maxWidth="150" maxHeight="10" onDragDetected="#onVolumeScrollDrag">
                <StackPane.margin>
                   <Insets right="-710.0" />
                </StackPane.margin>
