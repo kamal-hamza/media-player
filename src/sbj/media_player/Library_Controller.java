@@ -46,21 +46,6 @@ public class Library_Controller {
     private String title;
 
     @FXML
-    private Label composerLabel;
-
-    @FXML
-    private Label genreLabel;
-
-    @FXML
-    private Label artistLabel;
-
-    @FXML
-    private Label albumLabel;
-
-    @FXML
-    private Label titleLabel;
-
-    @FXML
     private boolean repeat;
 
     public Library_Controller() {
@@ -75,32 +60,37 @@ public class Library_Controller {
 
     @FXML
     protected void play() {
-        if (library.isEmpty()) {
-            System.out.println("Library is empty");
-            return;
+        if (MP != null && (MP.getStatus() == MediaPlayer.Status.STOPPED | MP.getStatus() == MediaPlayer.Status.PAUSED)) {
+            MP.play();
         }
-        if (currentTrackIndex >= library.size()) {
-            System.out.println("Reached end of library");
-            currentTrackIndex = 0;
-            return;
-        }
-
-        File file = library.get(currentTrackIndex);
-        String singleFile = file.toURI().toString();
-        Media media = new Media(singleFile);
-        MP = new MediaPlayer(media);
-        MP.play();
-        System.out.println("Playing: " + media.getSource());
-
-        MP.setOnEndOfMedia(() -> {
-            MP.dispose();
-            if (repeat) {
-                play();
-            } else {
-                currentTrackIndex++;
-                play();
+        else {
+            if (library.isEmpty()) {
+                System.out.println("Library is empty");
+                return;
             }
-        });
+            if (currentTrackIndex >= library.size()) {
+                System.out.println("Reached end of library");
+                currentTrackIndex = 0;
+                return;
+            }
+    
+            File file = library.get(currentTrackIndex);
+            String singleFile = file.toURI().toString();
+            Media media = new Media(singleFile);
+            MP = new MediaPlayer(media);
+            MP.play();
+            System.out.println("Playing: " + media.getSource());
+    
+            MP.setOnEndOfMedia(() -> {
+                MP.dispose();
+                if (repeat) {
+                    play();
+                } else {
+                    currentTrackIndex++;
+                    play();
+                }
+            });
+        }
     }
 
 
@@ -135,11 +125,6 @@ public class Library_Controller {
         } catch (IOException | SAXException | TikaException e) {
             System.out.println("Error");
         }
-        composerLabel.setText(composer);
-        genreLabel.setText(genre);
-        artistLabel.setText(artist);
-        albumLabel.setText(album);
-        titleLabel.setText(title);
         // Ends here
     }
 }
