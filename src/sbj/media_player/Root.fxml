@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane minHeight="650.0" minWidth="600.0" prefHeight="442.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <center>
+        <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+        <fx:include source="Library.fxml" />
+    </HBox>
+    </center>
+</BorderPane>
