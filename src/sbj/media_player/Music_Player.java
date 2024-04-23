@@ -29,6 +29,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
@@ -156,49 +157,20 @@ public class Music_Player {
         buttomStatusText.setText("Test Button Functionality - Repeat");
     }
 
-    @FXML
     protected void onOpenButtonClick() {
-        //currentlyPlaying.setText("Currently Playing: ");
-        FileChooser selectMusic = new FileChooser();
-    	selectMusic.setTitle("Select *.mp3 files.");
-
-    	// Selects multiple files, sorts them alphabetically, needs a data structure for library
-    	// Maybe a library class?
-    	/*
-    	List<File> files = selectMusic.showOpenMultipleDialog(null); // multiple files
-    	if (files!=null) {
-    		// Add data structure for library
-    	}
-    	*/
-    	File currentFile = selectMusic.showOpenDialog(null); // Single File
-    	if (currentFile != null) {
-    		String singleFile = currentFile.toURI().toString();
-    		Media media = new Media(singleFile);
-    		MP = new MediaPlayer(media);
-            // Getting metadata for mp3 file
-            try {
-                InputStream input = new FileInputStream(currentFile);
-                ContentHandler handler = new BodyContentHandler();
-                Metadata metadata = new Metadata();
-                ParseContext parseCtx = new ParseContext();
-                Mp3Parser mp3Parser = new Mp3Parser();
-                mp3Parser.parse(input, handler, metadata, parseCtx);
-                input.close();
-                this.title = metadata.get("title");
-                this.artist = metadata.get("xmpDM:artist");
-                this.album = metadata.get("xmpDM:album");
-                this.genre = metadata.get("xmpDM:genre");
-                this.composer = metadata.get("xmpDM:composer");
-            } catch (IOException | SAXException | TikaException e) {
-                System.out.println("Error");
+        DirectoryChooser directory = new DirectoryChooser();
+        directory.setTitle("Select Folder with mp3 files");
+        File currentDirectory = directory.showDialog(null);
+        if (currentDirectory != null) {
+            // Get the list of files inside the folder
+            File[] files = currentDirectory.listFiles();
+            // Create a Library Object
+            Library_Controller lib = new Library_Controller();
+            // Add all mp3 files to the library
+            for (File file : files) {
+                lib.addFile(file);
             }
-            // Ends here
-        	MP.setOnReady(() -> {
-        		currentlyPlaying.setText("Currently Playing: " + currentFile.getName());
-        	});
-            MP.setAutoPlay(true);
-            // bindVolumeSliderToMediaPlayer();
-    	}
+        }
     }
 
     // File Menu Actions
