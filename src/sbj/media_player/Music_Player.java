@@ -12,17 +12,6 @@ Features:	Play, Stop, Pause, Skip, Repeat songs
 package sbj.media_player;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.FileInputStream;
-
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.mp3.Mp3Parser;
-import org.apache.tika.sax.BodyContentHandler;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
 
 import javafx.fxml.FXML;
 import javafx.scene.media.Media;
@@ -82,6 +71,9 @@ public class Music_Player {
     private MediaPlayer MP;
 
     @FXML
+    protected Library_Controller lib = new Library_Controller();
+
+    @FXML
     protected void onStatusButtonClick() {
         if (MP != null) {
             // This function is for debugging purposes only but could be converted into a status display if desired
@@ -95,11 +87,7 @@ public class Music_Player {
     // Creating a new function to display the metadata for mp3 files, wil implement a panel for displaying info later
     @FXML
     protected void onInfoButtonClick() {
-        composerLabel.setText(composer);
-        genreLabel.setText(genre);
-        artistLabel.setText(artist);
-        albumLabel.setText(album);
-        titleLabel.setText(title);
+        
     }
 
     @FXML
@@ -157,6 +145,7 @@ public class Music_Player {
         buttomStatusText.setText("Test Button Functionality - Repeat");
     }
 
+    @FXML
     protected void onOpenButtonClick() {
         DirectoryChooser directory = new DirectoryChooser();
         directory.setTitle("Select Folder with mp3 files");
@@ -164,11 +153,12 @@ public class Music_Player {
         if (currentDirectory != null) {
             // Get the list of files inside the folder
             File[] files = currentDirectory.listFiles();
-            // Create a Library Object
-            Library_Controller lib = new Library_Controller();
             // Add all mp3 files to the library
             for (File file : files) {
-                lib.addFile(file);
+                if (file.getName().endsWith(".mp3")) {
+                    System.out.println(file);
+                    lib.addFile(file);
+                }
             }
         }
     }
