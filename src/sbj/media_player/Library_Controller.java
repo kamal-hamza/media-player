@@ -76,6 +76,7 @@ public class Library_Controller {
         library = new ArrayList<File>();
         currentTrackIndex = 0;
         repeat = false;
+        shuffle = false;
     }
 
     protected void addFile(File file) {
@@ -131,14 +132,15 @@ public class Library_Controller {
     }
 
     @FXML
-    protected void repeat() {
+    protected void toggleRepeat() {
         repeat = !repeat;
         System.out.println(repeat);
     }
 
     @FXML
-    protected void shuffle() {
+    protected void toggleShuffle() {
         shuffle = !shuffle;
+        System.out.println(shuffle);
     }
 
     @FXML
