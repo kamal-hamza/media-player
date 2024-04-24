@@ -12,23 +12,26 @@ Features:	Play, Stop, Pause, Skip, Repeat songs
 package sbj.media_player;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 
-import org.apache.tika.exception.TikaException;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
+
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.mp3.Mp3Parser;
 import org.apache.tika.sax.BodyContentHandler;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
+import org.apache.tika.exception.TikaException;
+
 
 import javafx.fxml.FXML;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import javafx.scene.control.Button;
@@ -101,11 +104,7 @@ public class Music_Player {
     // Creating a new function to display the metadata for mp3 files, wil implement a panel for displaying info later
     @FXML
     protected void onInfoButtonClick() {
-        composerLabel.setText(composer);
-        genreLabel.setText(genre);
-        artistLabel.setText(artist);
-        albumLabel.setText(album);
-        titleLabel.setText(title);
+        
     }
 
     @FXML
