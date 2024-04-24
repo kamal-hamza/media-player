@@ -1,4 +1,5 @@
 # Ignore all files except the src and tests folders
 *
 !src/
+!src/sbj/media_player
 !tests/

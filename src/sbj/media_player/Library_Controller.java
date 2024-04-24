@@ -2,6 +2,7 @@ package sbj.media_player;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,7 @@ import org.xml.sax.SAXException;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.DirectoryChooser;
@@ -64,6 +66,12 @@ public class Library_Controller {
     @FXML
     private Label titleLabel;
 
+    @FXML
+    private boolean shuffle;
+
+    @FXML
+    private Slider volumeSlider;
+
     public Library_Controller() {
         library = new ArrayList<File>();
         currentTrackIndex = 0;
@@ -89,6 +97,10 @@ public class Library_Controller {
                 currentTrackIndex = 0;
                 return;
             }
+
+            if (shuffle) {
+                Collections.shuffle(library);
+            }
     
             File file = library.get(currentTrackIndex);
             String singleFile = file.toURI().toString();
@@ -100,7 +112,10 @@ public class Library_Controller {
             MP.setOnEndOfMedia(() -> {
                 MP.dispose();
                 if (repeat) {
-                    play();
+                    if (currentTrackIndex == library.size() - 1) {
+                        currentTrackIndex = 0;
+                        play();
+                    }
                 } else {
                     currentTrackIndex++;
                     play();
@@ -122,10 +137,16 @@ public class Library_Controller {
     }
 
     @FXML
+    protected void shuffle() {
+        shuffle = !shuffle;
+    }
+
+    @FXML
     protected void back() {
         if (MP != null) {
             if (currentTrackIndex - 1 >= 0) {
                 currentTrackIndex--;
+                MP.dispose();
                 play();
             }
             else {
@@ -142,6 +163,7 @@ public class Library_Controller {
         if (MP != null) {
             if (currentTrackIndex + 1 <= library.size() - 1) {
                 currentTrackIndex++;
+                MP.dispose();
                 play();
             }
             else {
@@ -151,6 +173,11 @@ public class Library_Controller {
         else {
             System.out.println("Nothing is Playing");
         }
+    }
+
+    @FXML
+    protected void stop() {
+        MP.stop();
     }
 
     @FXML
@@ -197,5 +224,19 @@ public class Library_Controller {
                 }
             }
         }
+    }
+
+    @FXML
+    protected void bindVolumeSliderToMediaPlayer() {
+        MP.volumeProperty().bind(volumeSlider.valueProperty().divide(100.0));
+    }
+
+    @FXML
+    protected void onVolumeScrollDrag() {
+        volumeSlider.valueProperty().addListener((ov, oldVolume, newVolume) -> {
+            if (volumeSlider.isValueChanging()) {
+                MP.setVolume(volumeSlider.getValue());
+            }
+        });
     }
 }

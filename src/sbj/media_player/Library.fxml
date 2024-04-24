@@ -37,6 +37,7 @@
             <Button prefWidth="150" prefHeight="50" onAction="#back" text="Back"/>
             <Button prefWidth="150" prefHeight="50" onAction="#forward" text="Forward"/>
             <Button prefWidth="150" prefHeight="50" onAction="#repeat" text="Repeat"/>
+            <Slider min="0.0" max="100.0" maxWidth="150" maxHeight="10" onDragDetected="#onVolumeScrollDrag"></Slider>
         </HBox>
     </bottom>
 </BorderPane>
