@@ -32,7 +32,7 @@
     <bottom>
         <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
             <Button prefWidth="150" prefHeight="50" onAction="#viewInfo" text="View Music Info"/>
-            <Button prefWidth="150" prefHeight="50" onAction="#play" text="Play"/>
+            <Button prefWidth="150" prefHeight="50" onAction="#play" text="Play" fx:id="playButton" />
             <Button prefWidth="150" prefHeight="50" onAction="#pause" text="Pause"/>
             <Button prefWidth="150" prefHeight="50" onAction="#back" text="Back"/>
             <Button prefWidth="150" prefHeight="50" onAction="#forward" text="Forward"/>

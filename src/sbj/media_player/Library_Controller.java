@@ -230,16 +230,22 @@ public class Library_Controller {
 
     @FXML
     protected void initialize() {
-        volumeSlider.setValue(100.0);
-        System.out.println("initializing");
-        volumeSlider.valueChangingProperty().addListener((observable, wasChanging, isChanging) -> {
-            System.out.println(volumeSlider.getValue());
-            MP.setVolume(volumeSlider.getValue() / 100);
-        });
-        volumeSlider.setOnMouseClicked(event -> {
-            double value = (event.getX() / volumeSlider.getWidth()) * volumeSlider.getMax();
-            volumeSlider.setValue(value);
-            MP.setVolume(value / 100);
-        });
+        if (MP != null) {
+            volumeSlider.setValue(100.0);
+            System.out.println("initializing");
+            volumeSlider.valueChangingProperty().addListener((observable, wasChanging, isChanging) -> {
+                System.out.println(volumeSlider.getValue());
+                MP.setVolume(volumeSlider.getValue() / 100);
+            });
+            volumeSlider.setOnMouseClicked(event -> {
+                double value = (event.getX() / volumeSlider.getWidth()) * volumeSlider.getMax();
+                volumeSlider.setValue(value);
+                MP.setVolume(value / 100);
+            });
+        }
+        else {
+            System.out.println("No Media is Playing");
+        }
+        
     }
 }

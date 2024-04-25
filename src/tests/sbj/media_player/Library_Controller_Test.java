@@ -31,8 +31,8 @@ public class Library_Controller_Test extends ApplicationTest {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/sbj/media_player/Library.fxml"));
-        controller = fxmlLoader.getController();
         Scene scene = new Scene(fxmlLoader.load());
+        controller = fxmlLoader.getController();
         stage.setTitle("Media Player");
         stage.setScene(scene);
         stage.show();
@@ -45,17 +45,21 @@ public class Library_Controller_Test extends ApplicationTest {
 
     @Test
     public void testPlay() throws Exception {
-        File sampleFile = new File("C:/Users/kamal/Music/spotifydown.com - Nobody - from Kaiju No. 8.mp3");
+        File sampleFile = new File("C:/Users/kamal/Music/spotifydown.com - Gold Rush.mp3");
         Method addFile = Library_Controller.class.getDeclaredMethod("addFile", File.class);
         Field MPField = Library_Controller.class.getDeclaredField("MP");
 
         MPField.setAccessible(true);
         addFile.setAccessible(true);
 
+        if (controller == null) {
+            System.out.print("IS NULL");
+        }
+
         addFile.invoke(controller, sampleFile);
 
         WaitForAsyncUtils.waitForFxEvents();
-        clickOn("#play");
+        clickOn("#playButton");
 
         MediaPlayer MP = (MediaPlayer) MPField.get(controller);
         assertNotNull(MP);
