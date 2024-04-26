@@ -85,10 +85,10 @@ public class Library_Controller {
 
     @FXML
     protected void play() {
-        if (MP != null && (MP.getStatus() == MediaPlayer.Status.STOPPED | MP.getStatus() == MediaPlayer.Status.PAUSED)) {
+        if (MP != null
+                && (MP.getStatus() == MediaPlayer.Status.STOPPED | MP.getStatus() == MediaPlayer.Status.PAUSED)) {
             MP.play();
-        }
-        else {
+        } else {
             if (library.isEmpty()) {
                 System.out.println("Library is empty");
                 return;
@@ -102,14 +102,14 @@ public class Library_Controller {
             if (shuffle) {
                 Collections.shuffle(library);
             }
-    
+
             File file = library.get(currentTrackIndex);
             String singleFile = file.toURI().toString();
             Media media = new Media(singleFile);
             MP = new MediaPlayer(media);
             MP.play();
             System.out.println("Playing: " + media.getSource());
-    
+
             MP.setOnEndOfMedia(() -> {
                 MP.dispose();
                 if (repeat) {
@@ -125,10 +125,14 @@ public class Library_Controller {
         }
     }
 
-
     @FXML
     protected void pause() {
-        MP.pause();
+        if (library.isEmpty()) {
+            System.out.println("Library is empty");
+            return;
+        } else {
+            MP.pause();
+        }
     }
 
     @FXML
@@ -150,12 +154,12 @@ public class Library_Controller {
                 currentTrackIndex--;
                 MP.dispose();
                 play();
+            } else {
+                currentTrackIndex = library.size()-1;
+                MP.dispose();
+                play();
             }
-            else {
-                System.out.println("Cant go back");
-            }
-        }
-        else {
+        } else {
             System.out.println("Nothing is Playing");
         }
     }
@@ -167,12 +171,12 @@ public class Library_Controller {
                 currentTrackIndex++;
                 MP.dispose();
                 play();
+            } else {
+                currentTrackIndex = 0;
+                MP.dispose();
+                play();
             }
-            else {
-                System.out.println("Cant go forward");
-            }
-        }
-        else {
+        } else {
             System.out.println("Nothing is Playing");
         }
     }
@@ -184,30 +188,35 @@ public class Library_Controller {
 
     @FXML
     protected void viewInfo() {
-        File file = library.get(currentTrackIndex);
-        // Getting metadata for mp3 file
-        try {
-            InputStream input = new FileInputStream(file);
-            ContentHandler handler = new BodyContentHandler();
-            Metadata metadata = new Metadata();
-            ParseContext parseCtx = new ParseContext();
-            Mp3Parser mp3Parser = new Mp3Parser();
-            mp3Parser.parse(input, handler, metadata, parseCtx);
-            input.close();
-            title = metadata.get("title");
-            artist = metadata.get("xmpDM:artist");
-            album = metadata.get("xmpDM:album");
-            genre = metadata.get("xmpDM:genre");
-            composer = metadata.get("xmpDM:composer");
-        } catch (IOException | SAXException | TikaException e) {
-            System.out.println("Error");
+        if (library.isEmpty()) {
+            System.out.println("File not selected");
+            return;
+        } else {
+            File file = library.get(currentTrackIndex);
+            // Getting metadata for mp3 file
+            try {
+                InputStream input = new FileInputStream(file);
+                ContentHandler handler = new BodyContentHandler();
+                Metadata metadata = new Metadata();
+                ParseContext parseCtx = new ParseContext();
+                Mp3Parser mp3Parser = new Mp3Parser();
+                mp3Parser.parse(input, handler, metadata, parseCtx);
+                input.close();
+                title = metadata.get("title");
+                artist = metadata.get("xmpDM:artist");
+                album = metadata.get("xmpDM:album");
+                genre = metadata.get("xmpDM:genre");
+                composer = metadata.get("xmpDM:composer");
+            } catch (IOException | SAXException | TikaException e) {
+                System.out.println("Error");
+            }
+            titleLabel.setText(title);
+            artistLabel.setText(artist);
+            albumLabel.setText(album);
+            genreLabel.setText(genre);
+            composerLabel.setText(composer);
+            // Ends here
         }
-        titleLabel.setText(title);
-        artistLabel.setText(artist);
-        albumLabel.setText(album);
-        genreLabel.setText(genre);
-        composerLabel.setText(composer);
-        // Ends here
     }
 
     @FXML
@@ -226,6 +235,7 @@ public class Library_Controller {
                 }
             }
         }
+
     }
 
     @FXML
