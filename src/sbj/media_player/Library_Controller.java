@@ -13,6 +13,7 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.mp3.Mp3Parser;
 import org.apache.tika.sax.BodyContentHandler;
+import org.eclipse.jetty.server.RequestLog.Collection;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
@@ -22,10 +23,14 @@ import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.DirectoryChooser;
+import javafx.util.Duration;
 
 public class Library_Controller {
     @FXML
     private List<File> library;
+
+    @FXML
+    private List<File> shuffledLibrary;
 
     @FXML
     private MediaPlayer MP;
@@ -72,8 +77,12 @@ public class Library_Controller {
     @FXML
     private Slider volumeSlider;
 
+    @FXML
+    private Slider musicSlider;
+
     public Library_Controller() {
         library = new ArrayList<File>();
+        shuffledLibrary = new ArrayList<File>();
         currentTrackIndex = 0;
         repeat = false;
         shuffle = false;
@@ -81,6 +90,8 @@ public class Library_Controller {
 
     protected void addFile(File file) {
         library.add(file);
+        shuffledLibrary.add(file);
+        Collections.shuffle(shuffledLibrary);
     }
 
     @FXML
@@ -100,29 +111,54 @@ public class Library_Controller {
             }
 
             if (shuffle) {
-                Collections.shuffle(library);
+                playLibrary(shuffledLibrary);
+            }
+            else {
+                playLibrary(library);
             }
     
-            File file = library.get(currentTrackIndex);
-            String singleFile = file.toURI().toString();
-            Media media = new Media(singleFile);
-            MP = new MediaPlayer(media);
-            MP.play();
-            System.out.println("Playing: " + media.getSource());
+            // File file = library.get(currentTrackIndex);
+            // String singleFile = file.toURI().toString();
+            // Media media = new Media(singleFile);
+            // MP = new MediaPlayer(media);
+            // MP.play();
+            // System.out.println("Playing: " + media.getSource());
     
-            MP.setOnEndOfMedia(() -> {
-                MP.dispose();
-                if (repeat) {
-                    if (currentTrackIndex == library.size() - 1) {
-                        currentTrackIndex = 0;
-                        play();
-                    }
-                } else {
-                    currentTrackIndex++;
+            // MP.setOnEndOfMedia(() -> {
+            //     MP.dispose();
+            //     if (repeat) {
+            //         if (currentTrackIndex == library.size() - 1) {
+            //             currentTrackIndex = 0;
+            //             play();
+            //         }
+            //     } else {
+            //         currentTrackIndex++;
+            //         play();
+            //     }
+            // });
+        }
+    }
+
+    private void playLibrary(List<File> lib) {
+        File file = lib.get(currentTrackIndex);
+        String singleFile = file.toURI().toString();
+        Media media = new Media(singleFile);
+        MP = new MediaPlayer(media);
+        MP.play();
+        System.out.println("Playing: " + media.getSource());
+
+        MP.setOnEndOfMedia(() -> {
+            MP.dispose();
+            if (repeat) {
+                if (currentTrackIndex == lib.size() - 1) {
+                    currentTrackIndex = 0;
                     play();
                 }
-            });
-        }
+            } else {
+                currentTrackIndex++;
+                play();
+            }
+        });
     }
 
 
@@ -216,14 +252,18 @@ public class Library_Controller {
         directory.setTitle("Select Folder with mp3 files");
         File currentDirectory = directory.showDialog(null);
         if (currentDirectory != null) {
-            // Get the list of files inside the folder
-            File[] files = currentDirectory.listFiles();
-            // Add all mp3 files to the library
-            for (File file : files) {
-                if (file.getName().endsWith(".mp3")) {
-                    System.out.println(file);
-                    addFile(file);
-                }
+            processFiles(currentDirectory);
+        }
+    }
+
+    protected void processFiles(File currentDirectory) {
+        // Get the list of files inside the folder
+        File[] files = currentDirectory.listFiles();
+        // Add all mp3 files to the library
+        for (File file : files) {
+            if (file.getName().endsWith(".mp3")) {
+                System.out.println(file);
+                addFile(file);
             }
         }
     }
@@ -231,7 +271,7 @@ public class Library_Controller {
     @FXML
     protected void initialize() {
         if (MP != null) {
-            volumeSlider.setValue(100.0);
+            volumeSlider.setValue(50.0);
             System.out.println("initializing");
             volumeSlider.valueChangingProperty().addListener((observable, wasChanging, isChanging) -> {
                 System.out.println(volumeSlider.getValue());
@@ -241,6 +281,17 @@ public class Library_Controller {
                 double value = (event.getX() / volumeSlider.getWidth()) * volumeSlider.getMax();
                 volumeSlider.setValue(value);
                 MP.setVolume(value / 100);
+            });
+            musicSlider.setValue(0.0);
+            musicSlider.valueChangingProperty().addListener((observable, wasChanging, isChanging) -> {
+                Duration duration = new Duration(musicSlider.getValue());
+                MP.seek(duration);
+            });
+            musicSlider.setOnMouseClicked(event -> {
+                double value = (event.getX() / musicSlider.getWidth()) * musicSlider.getMax();
+                musicSlider.setValue(value);
+                Duration duration = new Duration(value);
+                MP.seek(duration);
             });
         }
         else {

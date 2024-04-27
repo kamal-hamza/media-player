@@ -26,19 +26,28 @@
                <Label fx:id="artistLabel" text="Artist" />
                <Label fx:id="albumLabel" text="Album" />
                <Label fx:id="titleLabel" text="Title" />
-               <Button prefWidth="150" prefHeight="50" onAction="#onOpenButtonClick" text="Choose Folder"/>
+               <Button prefWidth="150" prefHeight="50" onAction="#onOpenButtonClick" text="Choose Folder" fx:id="openButton" />
         </VBox>
     </top>
     <bottom>
-        <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
-            <Button prefWidth="150" prefHeight="50" onAction="#viewInfo" text="View Music Info"/>
-            <Button prefWidth="150" prefHeight="50" onAction="#play" text="Play" fx:id="playButton" />
-            <Button prefWidth="150" prefHeight="50" onAction="#pause" text="Pause"/>
-            <Button prefWidth="150" prefHeight="50" onAction="#back" text="Back"/>
-            <Button prefWidth="150" prefHeight="50" onAction="#forward" text="Forward"/>
-            <Button prefWidth="150" prefHeight="50" onAction="#toggleRepeat" text="Repeat"/>
-            <Button prefWidth="150" prefHeight="50" onAction="#toggleShuffle" text="Shuffle"/>
-            <Slider min="0.0" max="100.0" maxWidth="150" maxHeight="10" fx:id="volumeSlider"></Slider>
-        </HBox>
+        <BorderPane>
+            <top>
+                <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+                    <Slider maxHeight="10" HBox.hgrow="ALWAYS"  maxWidth="800" fx:id="musicSlider"></Slider>
+                </HBox>
+            </top>
+            <bottom>
+                <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+                    <Button prefWidth="150" prefHeight="50" onAction="#viewInfo" text="View Music Info"/>
+                    <Button prefWidth="150" prefHeight="50" onAction="#play" text="Play" fx:id="playButton" />
+                    <Button prefWidth="150" prefHeight="50" onAction="#pause" text="Pause"/>    
+                    <Button prefWidth="150" prefHeight="50" onAction="#back" text="Back"/>
+                    <Button prefWidth="150" prefHeight="50" onAction="#forward" text="Forward"/>
+                    <Button prefWidth="150" prefHeight="50" onAction="#toggleRepeat" text="Repeat"/>
+                    <Button prefWidth="150" prefHeight="50" onAction="#toggleShuffle" text="Shuffle" fx:id="shuffleButton" />
+                    <Slider min="0.0" max="100.0" maxWidth="150" maxHeight="10" fx:id="volumeSlider"></Slider>
+                </HBox>
+            </bottom>
+        </BorderPane>
     </bottom>
 </BorderPane>
