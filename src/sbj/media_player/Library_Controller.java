@@ -13,7 +13,7 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.mp3.Mp3Parser;
 import org.apache.tika.sax.BodyContentHandler;
-import org.eclipse.jetty.server.RequestLog.Collection;
+
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
@@ -52,6 +52,9 @@ public class Library_Controller {
 
     @FXML
     private String title;
+
+    @FXML
+    private double duration;
 
     @FXML
     private boolean repeat;
@@ -141,9 +144,26 @@ public class Library_Controller {
 
     private void playLibrary(List<File> lib) {
         File file = lib.get(currentTrackIndex);
+        try {
+            InputStream input = new FileInputStream(file);
+            ContentHandler handler = new BodyContentHandler();
+            Metadata metadata = new Metadata();
+            ParseContext parseCtx = new ParseContext();
+            Mp3Parser mp3Parser = new Mp3Parser();
+            mp3Parser.parse(input, handler, metadata, parseCtx);
+            input.close();
+            String dur = metadata.get("xmpDM:duration");
+            duration = Double.parseDouble(dur); 
+        } catch (IOException | SAXException | TikaException e) {
+            System.out.println("Error");
+        }
+        // initialize();
         String singleFile = file.toURI().toString();
         Media media = new Media(singleFile);
         MP = new MediaPlayer(media);
+        initializeVolumeSlider();
+        initializeMusicSlider();
+        System.out.println("MP initialize");
         MP.play();
         System.out.println("Playing: " + media.getSource());
 
@@ -269,7 +289,8 @@ public class Library_Controller {
     }
 
     @FXML
-    protected void initialize() {
+    protected void initializeVolumeSlider() {
+        System.out.println("initialize called");
         if (MP != null) {
             volumeSlider.setValue(50.0);
             System.out.println("initializing");
@@ -282,21 +303,33 @@ public class Library_Controller {
                 volumeSlider.setValue(value);
                 MP.setVolume(value / 100);
             });
+        }
+        else {
+            System.out.println("No Media is Playing");
+        }
+    }
+
+    protected void initializeMusicSlider() {
+        if (MP != null) {
             musicSlider.setValue(0.0);
+            musicSlider.setMax(duration);
             musicSlider.valueChangingProperty().addListener((observable, wasChanging, isChanging) -> {
-                Duration duration = new Duration(musicSlider.getValue());
+                Duration duration = new Duration(musicSlider.getValue() * 1000);
                 MP.seek(duration);
             });
             musicSlider.setOnMouseClicked(event -> {
                 double value = (event.getX() / musicSlider.getWidth()) * musicSlider.getMax();
                 musicSlider.setValue(value);
-                Duration duration = new Duration(value);
+                Duration duration = new Duration(value * 1000);
+                System.out.println(duration);
                 MP.seek(duration);
+            });
+            MP.currentTimeProperty().addListener((observable, oldVal, newVal) -> {
+                
             });
         }
         else {
-            System.out.println("No Media is Playing");
+            System.out.println("No media is Playing");
         }
-        
     }
 }

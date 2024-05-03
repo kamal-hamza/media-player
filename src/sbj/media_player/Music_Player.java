@@ -1,44 +1,43 @@
-/*
-
-Author: Multiple
-Creation Date: 4/10/2024
-
-Music_Player: Music player built for CSS 360 final project
-Features:	Play, Stop, Pause, Skip, Repeat songs
-
-
-*/
-
 package sbj.media_player;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
-import java.io.IOException;
 
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
-
+import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.mp3.Mp3Parser;
 import org.apache.tika.sax.BodyContentHandler;
-import org.apache.tika.exception.TikaException;
 
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
 
 import javafx.fxml.FXML;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.util.Duration;
-import javafx.scene.control.Button;
-
-import javax.swing.*;
 
 public class Music_Player {
+    @FXML
+    private Library library;
+
+    @FXML
+    private List<File> shuffledLibrary;
+
+    @FXML
+    private MediaPlayer MP;
+
+    @FXML
+    private int currentTrackIndex;
+
     @FXML
     private String composer;
 
@@ -53,6 +52,12 @@ public class Music_Player {
 
     @FXML
     private String title;
+
+    @FXML
+    private double duration;
+
+    @FXML
+    private boolean repeat;
 
     @FXML
     private Label composerLabel;
@@ -70,174 +75,218 @@ public class Music_Player {
     private Label titleLabel;
 
     @FXML
-    private File currentFile;
-    
-    @FXML
-    private Label buttomStatusText;
+    private boolean shuffle;
 
     @FXML
-    private Label currentlyPlaying;
-
-    @FXML
-    private Label playerStatus;
-
-    @FXML
-    private MediaPlayer MP;
-
-    @FXML 
     private Slider volumeSlider;
 
     @FXML
-    private Button repeatButton;
+    private Slider musicSlider;
+
+    public Music_Player() {
+        library = new Library();
+        currentTrackIndex = 0;
+        repeat = false;
+        shuffle = false;
+    }
 
     @FXML
-    protected void onStatusButtonClick() {
-        if (MP != null) {
-            // This function is for debugging purposes only but could be converted into a status display if desired
-            playerStatus.setText("Media Player Status: " + MP.getStatus().toString());
+    protected void play() {
+        System.out.println(library.musicList);
+        if (MP != null && (MP.getStatus() == MediaPlayer.Status.STOPPED | MP.getStatus() == MediaPlayer.Status.PAUSED)) {
+            MP.play();
         }
         else {
-            playerStatus.setText("Media Player Status: No media file is selected");
-        }
-    }
-
-    // Creating a new function to display the metadata for mp3 files, wil implement a panel for displaying info later
-    @FXML
-    protected void onInfoButtonClick() {
-        
-    }
-
-    @FXML
-    protected void onPlayButtonClick() {
-        // If paused, start playing from where it ended
-        // If stopped, start playing from beginning (default behavior)
-        // If playing, reset duration to beginning and start playing
-        if (MP.getStatus() == MediaPlayer.Status.STOPPED || MP.getStatus() == MediaPlayer.Status.PAUSED){
-            MP.play();
-        } else {
-            MP.seek(Duration.millis(0));
-            MP.play();
-        }
-
-        buttomStatusText.setText("Test Button Functionality - Play");
-    }
-
-    @FXML
-    protected void onStopButtonClick() {
-        MP.stop();
-        buttomStatusText.setText("Test Button Functionality - Stop");
-    }
-
-    @FXML
-    protected void onPauseButtonClick() {
-        if (MP.getStatus() == MediaPlayer.Status.PLAYING){
-            MP.pause();
-        } else if (MP.getStatus() == MediaPlayer.Status.PAUSED) {
-            MP.play();
-        }
-        buttomStatusText.setText("Test Button Functionality - Pause");
-    }
-
-    @FXML
-    protected void onBackButtonClick() {
-        buttomStatusText.setText("Test Button Functionality - Back");
-    }
-
-    @FXML
-    protected void onForwardButtonClick() {
-        buttomStatusText.setText("Test Button Functionality - Forward");
-    }
-
-    @FXML
-    protected void onRepeatButtonClick() {
-        if(MP.getOnEndOfMedia() == null) {
-            MP.setOnEndOfMedia(new Runnable() {
-                public void run() {
-                    MP.seek(Duration.millis(0));
-                }
-            });
-            repeatButton.setStyle("-fx-background-color: green;");
-        } else {
-            MP.setOnEndOfMedia(null);
-            repeatButton.setStyle(null);
-        }
-        buttomStatusText.setText("Test Button Functionality - Repeat");
-    }
-
-    @FXML
-    protected void onOpenButtonClick() {
-        //currentlyPlaying.setText("Currently Playing: ");
-        FileChooser selectMusic = new FileChooser();
-    	selectMusic.setTitle("Select *.mp3 files.");
-
-    	// Selects multiple files, sorts them alphabetically, needs a data structure for library
-    	// Maybe a library class?
-    	/*
-    	List<File> files = selectMusic.showOpenMultipleDialog(null); // multiple files
-    	if (files!=null) {
-    		// Add data structure for library
-    	}
-    	*/
-    	File currentFile = selectMusic.showOpenDialog(null); // Single File
-    	if (currentFile != null) {
-    		String singleFile = currentFile.toURI().toString();
-    		Media media = new Media(singleFile);
-    		MP = new MediaPlayer(media);
-            bindVolumeSliderToMediaPlayer();
-            volumeSlider.setValue(50);
-            // Getting metadata for mp3 file
-            try {
-                InputStream input = new FileInputStream(currentFile);
-                ContentHandler handler = new BodyContentHandler();
-                Metadata metadata = new Metadata();
-                ParseContext parseCtx = new ParseContext();
-                Mp3Parser mp3Parser = new Mp3Parser();
-                mp3Parser.parse(input, handler, metadata, parseCtx);
-                input.close();
-                this.title = metadata.get("title");
-                this.artist = metadata.get("xmpDM:artist");
-                this.album = metadata.get("xmpDM:album");
-                this.genre = metadata.get("xmpDM:genre");
-                this.composer = metadata.get("xmpDM:composer");
-            } catch (IOException | SAXException | TikaException e) {
-                System.out.println("Error");
+            if (library.musicList.isEmpty()) {
+                System.out.println("Library is empty");
+                return;
             }
-            // Ends here
-        	MP.setOnReady(() -> {
-        		currentlyPlaying.setText("Currently Playing: " + currentFile.getName());
-        	});
-            MP.setAutoPlay(true);
-    	}
+            if (currentTrackIndex >= library.musicList.size()) {
+                System.out.println("Reached end of library");
+                currentTrackIndex = 0;
+                return;
+            }
+
+            if (repeat) {
+                playLibrary(library.musicList);
+            }
+            else {
+                playLibrary(library.musicList);
+            }
+
+        }
     }
 
-    // File Menu Actions
-    @FXML
-    protected void onCloseMenuClick() {
-        // Close app when clicked
-        System.exit(0);
-    }
+    private void playLibrary(List<File> lib) {
+        System.out.println("playing");
+        File file = lib.get(currentTrackIndex);
+        try {
+            InputStream input = new FileInputStream(file);
+            ContentHandler handler = new BodyContentHandler();
+            Metadata metadata = new Metadata();
+            ParseContext parseCtx = new ParseContext();
+            Mp3Parser mp3Parser = new Mp3Parser();
+            mp3Parser.parse(input, handler, metadata, parseCtx);
+            input.close();
+            String dur = metadata.get("xmpDM:duration");
+            duration = Double.parseDouble(dur); 
+        } catch (IOException | SAXException | TikaException e) {
+            System.out.println("Error");
+        }
+        String singleFile = file.toURI().toString();
+        Media media = new Media(singleFile);
+        MP = new MediaPlayer(media);
+        initializeVolumeSlider();
+        initializeMusicSlider();
+        System.out.println("MP initialize");
+        MP.play();
+        System.out.println("Playing: " + media.getSource());
 
-    @FXML
-    protected void onAboutMenuClick() {
-        // Gives an about dialog box which contains the current version
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        JOptionPane.showMessageDialog(frame, "Media Player - Version: 0.1.3");
-    }
-
-    //Implementation for volume slider
-    @FXML
-    protected void bindVolumeSliderToMediaPlayer() {
-        MP.volumeProperty().bind(volumeSlider.valueProperty().divide(100.0));
-    }
-   
-    @FXML
-    protected void onVolumeScrollDrag() {
-        volumeSlider.valueProperty().addListener((ov, oldVolume, newVolume) -> {
-               if (volumeSlider.isValueChanging()) {
-                   MP.setVolume(volumeSlider.getValue());
-               }
+        MP.setOnEndOfMedia(() -> {
+            MP.dispose();
+            if (repeat) {
+                if (currentTrackIndex == lib.size() - 1) {
+                    currentTrackIndex = 0;
+                    play();
+                }
+            } else {
+                currentTrackIndex++;
+                play();
+            }
         });
-    } 
+    }
 
+    @FXML
+    protected void openFile() {
+        library.addFile();
+    }
+
+    @FXML
+    protected void pause() {
+        MP.pause();
+    }
+
+    @FXML
+    protected void toggleRepeat() {
+        repeat = !repeat;
+        System.out.println(repeat);
+    }
+
+    @FXML
+    protected void toggleShuffle() {
+        shuffle = !shuffle;
+        System.out.println(shuffle);
+    }
+
+    @FXML
+    protected void back() {
+        if (MP != null) {
+            if (currentTrackIndex - 1 >= 0) {
+                currentTrackIndex--;
+                MP.dispose();
+                play();
+            }
+            else {
+                System.out.println("Cant go back");
+            }
+        }
+        else {
+            System.out.println("Nothing is Playing");
+        }
+    }
+
+    @FXML
+    protected void forward() {
+        if (MP != null) {
+            if (currentTrackIndex + 1 <= library.musicList.size() - 1) {
+                currentTrackIndex++;
+                MP.dispose();
+                play();
+            }
+            else {
+                System.out.println("Cant go forward");
+            }
+        }
+        else {
+            System.out.println("Nothing is Playing");
+        }
+    }
+
+    @FXML
+    protected void stop() {
+        MP.stop();
+    }
+
+    @FXML
+    protected void viewInfo() {
+        File file = library.musicList.get(library.getCurrentTrackIndex());
+        // Getting metadata for mp3 file
+        try {
+            InputStream input = new FileInputStream(file);
+            ContentHandler handler = new BodyContentHandler();
+            Metadata metadata = new Metadata();
+            ParseContext parseCtx = new ParseContext();
+            Mp3Parser mp3Parser = new Mp3Parser();
+            mp3Parser.parse(input, handler, metadata, parseCtx);
+            input.close();
+            title = metadata.get("title");
+            artist = metadata.get("xmpDM:artist");
+            album = metadata.get("xmpDM:album");
+            genre = metadata.get("xmpDM:genre");
+            composer = metadata.get("xmpDM:composer");
+        } catch (IOException | SAXException | TikaException e) {
+            System.out.println("Error");
+        }
+        titleLabel.setText(title);
+        artistLabel.setText(artist);
+        albumLabel.setText(album);
+        genreLabel.setText(genre);
+        composerLabel.setText(composer);
+        // Ends here
+    }
+
+    @FXML
+    protected void initializeVolumeSlider() {
+        System.out.println("initialize called");
+        if (MP != null) {
+            volumeSlider.setValue(50.0);
+            System.out.println("initializing");
+            volumeSlider.valueChangingProperty().addListener((observable, wasChanging, isChanging) -> {
+                System.out.println(volumeSlider.getValue());
+                MP.setVolume(volumeSlider.getValue() / 100);
+            });
+            volumeSlider.setOnMouseClicked(event -> {
+                double value = (event.getX() / volumeSlider.getWidth()) * volumeSlider.getMax();
+                volumeSlider.setValue(value);
+                MP.setVolume(value / 100);
+            });
+        }
+        else {
+            System.out.println("No Media is Playing");
+        }
+    }
+
+    protected void initializeMusicSlider() {
+        if (MP != null) {
+            musicSlider.setValue(0.0);
+            musicSlider.setMax(duration);
+            musicSlider.valueChangingProperty().addListener((observable, wasChanging, isChanging) -> {
+                Duration duration = new Duration(musicSlider.getValue() * 1000);
+                MP.seek(duration);
+            });
+            musicSlider.setOnMouseClicked(event -> {
+                double value = (event.getX() / musicSlider.getWidth()) * musicSlider.getMax();
+                musicSlider.setValue(value);
+                Duration duration = new Duration(value * 1000);
+                System.out.println(duration);
+                MP.seek(duration);
+            });
+            MP.currentTimeProperty().addListener((observable, oldVal, newVal) -> {
+                
+            });
+        }
+        else {
+            System.out.println("No media is Playing");
+        }
+    }
 }

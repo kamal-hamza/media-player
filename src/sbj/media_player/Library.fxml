@@ -15,39 +15,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane minHeight="650.0" minWidth="600.0" prefHeight="442.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sbj.media_player.Library_Controller">
+<BorderPane minHeight="650.0" minWidth="600.0" prefHeight="442.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sbj.media_player.Library">
     <top>
-        <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
-            
+        <HBox>
+            <Button alignment="CENTER" layoutX="488.0" layoutY="27.0" mnemonicParsing="false" onAction="#addFile">
+                <graphic>
+                    <ImageView fitHeight="30" fitWidth="30">
+                        <image>
+                            <Image url="https://cdn-icons-png.flaticon.com/512/1092/1092216.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
         </HBox>
-        <VBox spacing="10" style="-fx-padding: 10;">
-               <Label fx:id="composerLabel" text="Composer" />
-               <Label fx:id="genreLabel" text="Genre" />
-               <Label fx:id="artistLabel" text="Artist" />
-               <Label fx:id="albumLabel" text="Album" />
-               <Label fx:id="titleLabel" text="Title" />
-               <Button prefWidth="150" prefHeight="50" onAction="#onOpenButtonClick" text="Choose Folder" fx:id="openButton" />
-        </VBox>
     </top>
-    <bottom>
-        <BorderPane>
-            <top>
-                <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
-                    <Slider maxHeight="10" HBox.hgrow="ALWAYS"  maxWidth="800" fx:id="musicSlider"></Slider>
-                </HBox>
-            </top>
-            <bottom>
-                <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
-                    <Button prefWidth="150" prefHeight="50" onAction="#viewInfo" text="View Music Info"/>
-                    <Button prefWidth="150" prefHeight="50" onAction="#play" text="Play" fx:id="playButton" />
-                    <Button prefWidth="150" prefHeight="50" onAction="#pause" text="Pause"/>    
-                    <Button prefWidth="150" prefHeight="50" onAction="#back" text="Back"/>
-                    <Button prefWidth="150" prefHeight="50" onAction="#forward" text="Forward"/>
-                    <Button prefWidth="150" prefHeight="50" onAction="#toggleRepeat" text="Repeat"/>
-                    <Button prefWidth="150" prefHeight="50" onAction="#toggleShuffle" text="Shuffle" fx:id="shuffleButton" />
-                    <Slider min="0.0" max="100.0" maxWidth="150" maxHeight="10" fx:id="volumeSlider"></Slider>
-                </HBox>
-            </bottom>
-        </BorderPane>
-    </bottom>
 </BorderPane>
