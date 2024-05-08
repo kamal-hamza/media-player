@@ -93,6 +93,9 @@ public class Music_Player {
     @FXML
     protected void play() {
         System.out.println(library.musicList);
+        if (MP != null && MP.getStatus() == MediaPlayer.Status.PLAYING) {
+            return;
+        }
         if (MP != null && (MP.getStatus() == MediaPlayer.Status.STOPPED | MP.getStatus() == MediaPlayer.Status.PAUSED)) {
             MP.play();
         }
