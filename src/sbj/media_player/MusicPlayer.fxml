@@ -41,6 +41,7 @@
         <BorderPane>
             <top>
                 <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+                    <Label fx:id="durationLabel" text="0:00" />
                     <Slider maxHeight="10" HBox.hgrow="ALWAYS"  maxWidth="800" fx:id="musicSlider"></Slider>
                 </HBox>
             </top>

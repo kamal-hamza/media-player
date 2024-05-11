@@ -85,10 +85,15 @@ public class Music_Player {
     private Label titleLabel;
 
     @FXML
+    private Label durationLabel;
+
+    @FXML
     private Slider volumeSlider;
 
     @FXML
     private Slider musicSlider;
+
+    private double volume = 50.0;
 
     public Music_Player() {
         library = new Library();
@@ -181,6 +186,9 @@ public class Music_Player {
         repeat = !repeat;
         System.out.println(repeat);
         repeatButton.setText(repeat ? "Repeat:ON" : "Repeat:OFF");
+        if (MP != null && MP.getStatus() == MediaPlayer.Status.PLAYING) {
+            MP.setVolume (volume / 100);
+        }
     }
 
     @FXML
@@ -261,15 +269,17 @@ public class Music_Player {
     protected void initializeVolumeSlider() {
         System.out.println("initialize called");
         if (MP != null) {
-            volumeSlider.setValue(50.0);
+            volumeSlider.setValue(volume);
             System.out.println("initializing");
             volumeSlider.valueChangingProperty().addListener((observable, wasChanging, isChanging) -> {
                 System.out.println(volumeSlider.getValue());
+                volume = volumeSlider.getValue();
                 MP.setVolume(volumeSlider.getValue() / 100);
             });
             volumeSlider.setOnMouseClicked(event -> {
                 double value = (event.getX() / volumeSlider.getWidth()) * volumeSlider.getMax();
                 volumeSlider.setValue(value);
+                volume = value;
                 MP.setVolume(value / 100);
             });
         }
@@ -294,7 +304,12 @@ public class Music_Player {
                 MP.seek(duration);
             });
             MP.currentTimeProperty().addListener((observable, oldVal, newVal) -> {
-                
+                musicSlider.setValue(newVal.toMillis() / 1000);
+                double time = newVal.toSeconds();
+                int minutes = (int) (time / 60);
+                int seconds = (int) (time % 60);
+                String songDuration = String.format("%d:%02d", minutes, seconds);
+                durationLabel.setText(songDuration);
             });
         }
         else {
