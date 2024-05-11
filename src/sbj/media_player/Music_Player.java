@@ -18,6 +18,7 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
@@ -60,6 +61,12 @@ public class Music_Player {
     private boolean repeat;
 
     @FXML
+    private Button repeatButton;
+
+    @FXML
+    private boolean shuffle;
+
+    @FXML
     private Label composerLabel;
 
     @FXML
@@ -73,9 +80,6 @@ public class Music_Player {
 
     @FXML
     private Label titleLabel;
-
-    @FXML
-    private boolean shuffle;
 
     @FXML
     private Slider volumeSlider;
@@ -173,6 +177,13 @@ public class Music_Player {
     protected void toggleRepeat() {
         repeat = !repeat;
         System.out.println(repeat);
+        repeatButton.setText(repeat ? "Repeat:ON" : "Repeat:OFF");
+    }
+
+    @FXML
+    protected void repeatButtonClick() {
+        System.out.println("Repeat Button clicked!");
+        // Add your button click logic here
     }
 
     @FXML
