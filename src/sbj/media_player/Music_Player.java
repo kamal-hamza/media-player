@@ -67,6 +67,9 @@ public class Music_Player {
     private boolean shuffle;
 
     @FXML
+    private Button shuffleButton;
+
+    @FXML
     private Label composerLabel;
 
     @FXML
@@ -181,15 +184,10 @@ public class Music_Player {
     }
 
     @FXML
-    protected void repeatButtonClick() {
-        System.out.println("Repeat Button clicked!");
-        // Add your button click logic here
-    }
-
-    @FXML
     protected void toggleShuffle() {
         shuffle = !shuffle;
         System.out.println(shuffle);
+        shuffleButton.setText(shuffle ? "Shuffle: ON" : "Shuffle: OFF");
     }
 
     @FXML

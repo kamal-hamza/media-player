@@ -93,7 +93,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button prefWidth="150" prefHeight="50" onAction="#toggleShuffle" text="Shuffle" fx:id="shuffleButton" />
+                  <Button fx:id  = "shuffleButton" prefWidth="150" prefHeight="50" onAction="#toggleShuffle" text="Shuffle: OFF"/>
                   <Slider min="0.0" max="100.0" maxWidth="150" maxHeight="10" fx:id="volumeSlider"></Slider>
                 </HBox>
             </bottom>
