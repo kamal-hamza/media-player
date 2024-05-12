@@ -48,13 +48,20 @@
             </top>
             <bottom>
                <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
-                  <Button prefWidth="150" prefHeight="50" onAction="#viewInfo" text="View Music Info">
-                  </Button>
                   <Button prefWidth="150" prefHeight="50" onAction="#play" text="Play" fx:id="playButton">
                      <graphic>
                         <ImageView fitHeight="30" fitWidth="30">
                            <image>
                               <Image url="https://cdn-icons-png.flaticon.com/512/3318/3318660.png"/>
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button prefWidth="150" prefHeight="50" onAction="#stop" text="Stop">
+                  <graphic>
+                        <ImageView fitHeight="30" fitWidth="30">
+                           <image>
+                              <Image url="https://cdn-icons-png.flaticon.com/128/4029/4029077.png"/>
                            </image>
                         </ImageView>
                      </graphic>
