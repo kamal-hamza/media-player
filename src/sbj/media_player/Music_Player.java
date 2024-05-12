@@ -88,6 +88,9 @@ public class Music_Player {
     private Label durationLabel;
 
     @FXML
+    private Label durationLabel2;
+
+    @FXML
     private Slider volumeSlider;
 
     @FXML
@@ -144,7 +147,12 @@ public class Music_Player {
             mp3Parser.parse(input, handler, metadata, parseCtx);
             input.close();
             String dur = metadata.get("xmpDM:duration");
-            duration = Double.parseDouble(dur); 
+            duration = Double.parseDouble(dur);
+            System.out.println(dur);
+            int minutes = (int) (duration / 60);
+            int seconds = (int) (duration % 60);
+            String songDuration = String.format("%d:%02d", minutes, seconds);
+            durationLabel2.setText(songDuration);
         } catch (IOException | SAXException | TikaException e) {
             System.out.println("Error");
         }
@@ -156,7 +164,6 @@ public class Music_Player {
         System.out.println("MP initialize");
         MP.play();
         System.out.println("Playing: " + media.getSource());
-
         MP.setOnEndOfMedia(() -> {
             MP.dispose();
             if (repeat) {
@@ -240,6 +247,7 @@ public class Music_Player {
     @FXML
     protected void viewInfo() {
         File file = library.musicList.get(library.getCurrentTrackIndex());
+        System.out.println(file);
         // Getting metadata for mp3 file
         try {
             InputStream input = new FileInputStream(file);
