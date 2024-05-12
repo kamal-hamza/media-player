@@ -275,11 +275,11 @@ public class Music_Player {
         } catch (IOException | SAXException | TikaException e) {
             System.out.println("Error");
         }
-        titleLabel.setText(title);
-        artistLabel.setText(artist);
-        albumLabel.setText(album);
-        genreLabel.setText(genre);
-        composerLabel.setText(composer);
+        titleLabel.setText("Title: " + (title != null ? title : "Unknown"));
+        artistLabel.setText("Artist: " + (artist != null ? artist : "Unknown"));
+        albumLabel.setText("Album: " + (album != null ? album : "Unknown"));
+        genreLabel.setText("Genre: " + (genre != null ? genre : "Unknown"));
+        composerLabel.setText("Composer: " + (composer != null ? composer : "Unknown"));
         // Ends here
     }
 

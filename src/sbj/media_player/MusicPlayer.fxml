@@ -21,6 +21,7 @@
             
         </HBox>
         <VBox spacing="10" style="-fx-padding: 10;">
+               <Label text="Currently Playing:" style="-fx-font-family: 'Times New Roman'; -fx-font-size: 25px;" />
                <Label fx:id="composerLabel" text="Composer" />
                <Label fx:id="genreLabel" text="Genre" />
                <Label fx:id="artistLabel" text="Artist" />
