@@ -17,12 +17,14 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
 
@@ -112,6 +114,7 @@ public class Music_Player {
             return;
         }
         if (MP != null && (MP.getStatus() == MediaPlayer.Status.STOPPED | MP.getStatus() == MediaPlayer.Status.PAUSED)) {
+            //title=;
             MP.play();
         }
         else {
@@ -275,11 +278,11 @@ public class Music_Player {
         } catch (IOException | SAXException | TikaException e) {
             System.out.println("Error");
         }
-        titleLabel.setText("Title: " + (title != null ? title : "Unknown"));
-        artistLabel.setText("Artist: " + (artist != null ? artist : "Unknown"));
-        albumLabel.setText("Album: " + (album != null ? album : "Unknown"));
-        genreLabel.setText("Genre: " + (genre != null ? genre : "Unknown"));
-        composerLabel.setText("Composer: " + (composer != null ? composer : "Unknown"));
+        titleLabel.setText((title != null ? title : "Unknown"));
+        artistLabel.setText((artist != null ? artist : "Unknown"));
+        albumLabel.setText((album != null ? album : "Unknown"));
+        genreLabel.setText((genre != null ? genre : "Unknown"));
+        composerLabel.setText((composer != null ? composer : "Unknown"));
         // Ends here
     }
 
