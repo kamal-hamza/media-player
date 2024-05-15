@@ -22,7 +22,7 @@ import java.io.IOException;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Root.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Library.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Media Player");
         stage.setScene(scene);

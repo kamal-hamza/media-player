@@ -1,53 +1,57 @@
 package sbj.media_player;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeItem.TreeModificationEvent;
+import javafx.scene.control.TreeView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
-
 public class Library {
-    public List<File> musicList;
+    @FXML
+    private TreeView<String> treeView;
 
-    private int currentTrackIndex;
-
-    public Library() {
-        musicList = new ArrayList<>();
-    }
+    private TreeItem<String> root;
 
     @FXML
-    protected void onOpenButtonClick() {
-        
+    private void initialize() {
+        root = new TreeItem<>("Songs");
+        treeView.setRoot(root);
+        root.setExpanded(true);
     }
 
+    // Add folder containing multiple files
     @FXML
-    protected void addFile() {
-        FileChooser file = new FileChooser();
-        file.setTitle("Select Folder with mp3 files");
-        File currentFile = file.showOpenDialog(null);
-        if (currentFile != null) {
-            musicList.add(currentFile);
+    protected void selectFolder() {
+        DirectoryChooser dir = new DirectoryChooser();
+        File selectedDir = dir.showDialog(null);
+        if (selectedDir != null) {
+            File[] files = selectedDir.listFiles((d, name) -> name.endsWith(".mp3"));
+            if (files != null) {
+                // TODO: check to see if song is in the treeview
+                for (File file : files) {
+                    System.out.println(file);
+                    TreeItem<String> item = new TreeItem<>(file.getName());
+                    root.getChildren().add(item);
+                    treeView.fireEvent(new TreeModificationEvent<>(TreeItem.valueChangedEvent(), item));
+                }
+            }
         }
-        System.out.println(musicList);
     }
 
-    private void removeFile(int index) {
-        musicList.remove(index);
+    // add single file
+    @FXML
+    protected void selectFile() {
+        FileChooser file = new FileChooser();
+        File song = file.showOpenDialog(null);
+        if (song != null) {
+            // TODO: check to see if song is in the treeview
+            TreeItem<String> item = new TreeItem<>(song.getName());
+            root.getChildren().add(item);
+            treeView.fireEvent(new TreeModificationEvent<>(TreeItem.valueChangedEvent(), item));
+        }
     }
-
-    public int getCurrentTrackIndex() {
-        return this.currentTrackIndex;
-    }
-
-    public void setCurrentTrackIndex(int index) {
-        this.currentTrackIndex = index;
-    }
-
-    public List<File> getMusicLibrary() {
-        return this.musicList;
-    }
-}
+}  
