@@ -13,14 +13,15 @@ import javafx.stage.FileChooser;
 public class Library {
     @FXML
     private TreeView<String> treeView;
-
     private TreeItem<String> root;
+    private 
 
     @FXML
     private void initialize() {
         root = new TreeItem<>("Songs");
         treeView.setRoot(root);
         root.setExpanded(true);
+        
     }
 
     // Add folder containing multiple files
@@ -54,4 +55,15 @@ public class Library {
             treeView.fireEvent(new TreeModificationEvent<>(TreeItem.valueChangedEvent(), item));
         }
     }
+
+    @FXML
+    protected void selectMusic() {
+        ObservableList<TreeItem<String>> items = treeView.getSelectionModel().getSelectedItems();
+        addToPlaylist(items);
+    }
+
+    protected void addToPlaylist(ObservableList<TreeItem<String>> items) {
+
+    }
+
 }  
