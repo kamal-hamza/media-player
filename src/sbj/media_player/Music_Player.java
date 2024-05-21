@@ -30,7 +30,7 @@ import javafx.util.Duration;
 
 public class Music_Player {
     @FXML
-    private Library library;
+    private Playlist playlist;
 
     @FXML
     private List<File> shuffledLibrary;
@@ -101,7 +101,7 @@ public class Music_Player {
     private double volume = 50.0;
 
     public Music_Player() {
-        library = new Library();
+        playlist = Playlist.getInstance();
         currentTrackIndex = 0;
         repeat = false;
         shuffle = false;
@@ -109,7 +109,7 @@ public class Music_Player {
 
     @FXML
     protected void play() {
-        System.out.println(library.musicList);
+        System.out.println(playlist.getPlaylist());
         if (MP != null && MP.getStatus() == MediaPlayer.Status.PLAYING) {
             return;
         }
@@ -118,22 +118,22 @@ public class Music_Player {
             MP.play();
         }
         else {
-            if (library.musicList.isEmpty()) {
+            if (playlist.getPlaylist().isEmpty()) {
                 System.out.println("Library is empty");
                 return;
             }
-            if (currentTrackIndex >= library.musicList.size()) {
+            if (currentTrackIndex >= playlist.getPlaylist().size()) {
                 System.out.println("Reached end of library");
                 currentTrackIndex = 0;
-                library.setCurrentTrackIndex(currentTrackIndex);
+                playlist.setCurrentTrackIndex(currentTrackIndex);
                 return;
             }
 
             if (repeat) {
-                playLibrary(library.musicList);
+                playLibrary(playlist.getPlaylist());
             }
             else {
-                playLibrary(library.musicList);
+                playLibrary(playlist.getPlaylist());
             }
 
         }
@@ -179,7 +179,7 @@ public class Music_Player {
             } else {
                 currentTrackIndex++;
             }
-            library.setCurrentTrackIndex(currentTrackIndex);
+            playlist.setCurrentTrackIndex(currentTrackIndex);
             viewInfo();
             if (repeat || currentTrackIndex < lib.size()) {
             play();
@@ -187,10 +187,10 @@ public class Music_Player {
         });
     }
     
-    @FXML
-    protected void openFile() {
-        library.addFile();
-    }
+    // @FXML
+    // protected void openFile() {
+    //     playlist.addFile();
+    // }
 
     @FXML
     protected void pause() {
@@ -219,7 +219,7 @@ public class Music_Player {
         if (MP != null) {
             if (currentTrackIndex - 1 >= 0) {
                 currentTrackIndex--;
-                library.setCurrentTrackIndex(currentTrackIndex);
+                playlist.setCurrentTrackIndex(currentTrackIndex);
                 MP.dispose();
                 viewInfo();
                 play();
@@ -236,9 +236,9 @@ public class Music_Player {
     @FXML
     protected void forward() {
         if (MP != null) {
-            if (currentTrackIndex + 1 <= library.musicList.size() - 1) {
+            if (currentTrackIndex + 1 <= playlist.getPlaylist().size() - 1) {
                 currentTrackIndex++;
-                library.setCurrentTrackIndex(currentTrackIndex);
+                playlist.setCurrentTrackIndex(currentTrackIndex);
                 MP.dispose();
                 viewInfo();
                 play();
@@ -259,7 +259,7 @@ public class Music_Player {
 
     protected void viewInfo() {
         System.out.println(currentTrackIndex);
-        File file = library.musicList.get(library.getCurrentTrackIndex());
+        File file = playlist.getPlaylist().get(playlist.getCurrentTrackIndex());
         System.out.println(currentTrackIndex);
         // Getting metadata for mp3 file
         try {

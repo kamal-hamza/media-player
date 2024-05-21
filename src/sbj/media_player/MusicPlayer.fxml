@@ -108,15 +108,15 @@
                      </graphic>
                   </Button>
                   <Button fx:id  = "shuffleButton" prefWidth="150" prefHeight="50" onAction="#toggleShuffle" text="Shuffle: OFF"/>
-                  <Button prefWidth="150" prefHeight="50" onAction="#openFile" fx:id="openButton" text = "Open File">
-                  <graphic>
-                     <ImageView fitHeight="30" fitWidth="30">
-                        <image>
-                           <Image url="https://cdn-icons-png.flaticon.com/512/1092/1092216.png"/>
-                        </image>
-                     </ImageView>
-                  </graphic>
-               </Button>
+                  <!-- <Button prefWidth="150" prefHeight="50" onAction="#openFile" fx:id="openButton" text = "Open File">
+                     <graphic>
+                        <ImageView fitHeight="30" fitWidth="30">
+                           <image>
+                              <Image url="https://cdn-icons-png.flaticon.com/512/1092/1092216.png"/>
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button> -->
                   <Slider min="0.0" max="100.0" maxWidth="150" maxHeight="10" fx:id="volumeSlider"></Slider>
                 </HBox>
             </bottom>

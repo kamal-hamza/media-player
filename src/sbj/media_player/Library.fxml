@@ -31,6 +31,8 @@
             </Button>
             <Button alignment="CENTER" layoutX="488.0" layoutY="27.0" mnemonicParsing="false" onAction="#selectFile" text="Select File">
             </Button>
+            <Button alignment="CENTER" layoutX="488.0" layoutY="27.0" mnemonicParsing="false" onAction="#selectMusic" text="Add">
+            </Button>
         </HBox>
     </top>
 </BorderPane>

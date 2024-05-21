@@ -1,9 +1,12 @@
 package sbj.media_player;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeItem.TreeModificationEvent;
 import javafx.scene.control.TreeView;
@@ -12,16 +15,21 @@ import javafx.stage.FileChooser;
 
 public class Library {
     @FXML
-    private TreeView<String> treeView;
-    private TreeItem<String> root;
-    private 
+    private TreeView<File> treeView;
+    private TreeItem<File> root;
+    private Set<File> songSet;
+    private Playlist playlist;
+    
 
     @FXML
     private void initialize() {
-        root = new TreeItem<>("Songs");
+        root = new TreeItem<>();
+        songSet = new HashSet<>();
         treeView.setRoot(root);
         root.setExpanded(true);
-        
+        treeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        treeView.setShowRoot(false);
+        playlist = Playlist.getInstance();
     }
 
     // Add folder containing multiple files
@@ -34,10 +42,13 @@ public class Library {
             if (files != null) {
                 // TODO: check to see if song is in the treeview
                 for (File file : files) {
-                    System.out.println(file);
-                    TreeItem<String> item = new TreeItem<>(file.getName());
-                    root.getChildren().add(item);
-                    treeView.fireEvent(new TreeModificationEvent<>(TreeItem.valueChangedEvent(), item));
+                    if (!songSet.contains(file)) {
+                        songSet.add(file);
+                        System.out.println(file);
+                        TreeItem<File> item = new TreeItem<>(file);
+                        root.getChildren().add(item);
+                        treeView.fireEvent(new TreeModificationEvent<>(TreeItem.valueChangedEvent(), item));
+                    }
                 }
             }
         }
@@ -49,21 +60,27 @@ public class Library {
         FileChooser file = new FileChooser();
         File song = file.showOpenDialog(null);
         if (song != null) {
-            // TODO: check to see if song is in the treeview
-            TreeItem<String> item = new TreeItem<>(song.getName());
-            root.getChildren().add(item);
-            treeView.fireEvent(new TreeModificationEvent<>(TreeItem.valueChangedEvent(), item));
+            if (!songSet.contains(song)) {
+                TreeItem<File> item = new TreeItem<>(song);
+                root.getChildren().add(item);
+                treeView.fireEvent(new TreeModificationEvent<>(TreeItem.valueChangedEvent(), item));
+            }
         }
     }
 
     @FXML
     protected void selectMusic() {
-        ObservableList<TreeItem<String>> items = treeView.getSelectionModel().getSelectedItems();
+        ObservableList<TreeItem<File>> items = treeView.getSelectionModel().getSelectedItems();
         addToPlaylist(items);
     }
 
-    protected void addToPlaylist(ObservableList<TreeItem<String>> items) {
-
+    @FXML
+    protected void addToPlaylist(ObservableList<TreeItem<File>> items) {
+        for (TreeItem<File> item : items) {
+            File song = item.getValue();
+            playlist.add(song);
+        }
+        System.out.println(playlist.toString());
     }
 
 }  
