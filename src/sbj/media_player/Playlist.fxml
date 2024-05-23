@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane minHeight="650.0" minWidth="600.0" prefHeight="442.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sbj.media_player.Playlist">
+    <children>
+        <ListView fx:id="playlistView" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" />
+    </children>
+</AnchorPane>
