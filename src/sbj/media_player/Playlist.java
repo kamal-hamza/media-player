@@ -1,41 +1,55 @@
 package sbj.media_player;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.net.URL;
 import java.util.HashSet;
-import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Set;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 
 public class Playlist {
     
-    private static Playlist instance;
-    private List<File> playlist;
-    private Set<File> songSet;
-    private int currentTrackIndex;
+    @FXML
+    private ListView<File> playlistView;
 
+    // private ObservableList<File> files;
+    private static Playlist instance;
+    private int currentTrackIndex;
+    private Set<File> songSet;
+    
     public Playlist() {
-        playlist = new ArrayList<File>();
         songSet = new HashSet<>();
+        System.out.print(songSet.toString());
+        // files = FXCollections.observableArrayList();
+        playlistView = new ListView<>();
     }
 
     protected void add(File file) {
         if (!songSet.contains(file)) {
             songSet.add(file);
-            playlist.add(file);
+            playlistView.getItems().add(file);
+            System.out.println(printToString());
         }
     }
-    
-    public String toString() {
+
+    public String printToString() {
         String s = "[";
-        for (File file : playlist) {
+        for (File file : playlistView.getItems()) {
             s += file + ", ";
         }
         s += "]";
         return s;
     }
 
-    protected List<File> getPlaylist() {
-        return this.playlist;
+    protected ListView<File> getPlaylist() {
+        return this.playlistView;
     }
 
     protected int getCurrentTrackIndex() {
@@ -44,14 +58,6 @@ public class Playlist {
 
     protected void setCurrentTrackIndex(int index) {
         this.currentTrackIndex = index;
-    }
-
-    protected void encrementTrackIndex() {
-        this.currentTrackIndex++;
-    }
-
-    protected void decrementTrackindex() {
-        this.currentTrackIndex--;
     }
 
     protected static Playlist getInstance() {

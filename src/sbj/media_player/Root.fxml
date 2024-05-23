@@ -8,6 +8,7 @@
         <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
             <fx:include source="Library.fxml" />
             <fx:include source="MusicPlayer.fxml" />
+            <fx:include source="Playlist.fxml" />
         </HBox>
     </center>
 </BorderPane>

@@ -21,6 +21,7 @@ import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -118,11 +119,11 @@ public class Music_Player {
             MP.play();
         }
         else {
-            if (playlist.getPlaylist().isEmpty()) {
+            if (playlist.getPlaylist().getItems() == null) {
                 System.out.println("Library is empty");
                 return;
             }
-            if (currentTrackIndex >= playlist.getPlaylist().size()) {
+            if (currentTrackIndex >= playlist.getPlaylist().getItems().size()) {
                 System.out.println("Reached end of library");
                 currentTrackIndex = 0;
                 playlist.setCurrentTrackIndex(currentTrackIndex);
@@ -139,10 +140,10 @@ public class Music_Player {
         }
     }
 
-    private void playLibrary(List<File> lib) {
+    private void playLibrary(ListView<File> lib) {
         System.out.println("playing");
-        File file = lib.get(currentTrackIndex);
-        currentTrackIndex = lib.indexOf(file);
+        File file = lib.getItems().get(currentTrackIndex);
+        currentTrackIndex = lib.getItems().indexOf(file);
         viewInfo();
         try {
             InputStream input = new FileInputStream(file);
@@ -173,7 +174,7 @@ public class Music_Player {
         MP.setOnEndOfMedia(() -> {
             MP.dispose();
             if (repeat) {
-                if (currentTrackIndex == lib.size() - 1) {
+                if (currentTrackIndex == lib.getItems().size() - 1) {
                     currentTrackIndex = 0;
                 }
             } else {
@@ -181,7 +182,7 @@ public class Music_Player {
             }
             playlist.setCurrentTrackIndex(currentTrackIndex);
             viewInfo();
-            if (repeat || currentTrackIndex < lib.size()) {
+            if (repeat || currentTrackIndex < lib.getItems().size()) {
             play();
             }
         });
@@ -236,7 +237,7 @@ public class Music_Player {
     @FXML
     protected void forward() {
         if (MP != null) {
-            if (currentTrackIndex + 1 <= playlist.getPlaylist().size() - 1) {
+            if (currentTrackIndex + 1 <= playlist.getPlaylist().getItems().size() - 1) {
                 currentTrackIndex++;
                 playlist.setCurrentTrackIndex(currentTrackIndex);
                 MP.dispose();
@@ -259,7 +260,7 @@ public class Music_Player {
 
     protected void viewInfo() {
         System.out.println(currentTrackIndex);
-        File file = playlist.getPlaylist().get(playlist.getCurrentTrackIndex());
+        File file = playlist.getPlaylist().getItems().get(playlist.getCurrentTrackIndex());
         System.out.println(currentTrackIndex);
         // Getting metadata for mp3 file
         try {

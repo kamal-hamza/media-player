@@ -80,7 +80,6 @@ public class Library {
             File song = item.getValue();
             playlist.add(song);
         }
-        System.out.println(playlist.toString());
     }
 
 }  
