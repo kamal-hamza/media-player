@@ -48,6 +48,9 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <style>
+                     -fx-background-radius:50em;
+                     </style>
                   </Button>
                   <Button onAction="#stop" prefHeight="50" prefWidth="150" text="Stop">
                   <graphic>
@@ -57,6 +60,9 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <style>
+                     -fx-background-radius:50em;
+                     </style>
                   </Button>
                   <Button onAction="#pause" prefHeight="50" prefWidth="150" text="Pause">
                      <graphic>
@@ -66,6 +72,9 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <style>
+                     -fx-background-radius:50em;
+                     </style>
                   </Button>   
                   <Button onAction="#back" prefHeight="50" prefWidth="150" text="Back">
                      <graphic>
@@ -75,6 +84,9 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <style>
+                     -fx-background-radius:50em;
+                     </style>
                   </Button>
                   <Button onAction="#forward" prefHeight="50" prefWidth="150" text="Forward">
                      <graphic>
@@ -84,6 +96,9 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <style>
+                     -fx-background-radius:50em;
+                     </style>
                   </Button>
                   <Button fx:id="repeatButton" onAction="#toggleRepeat" prefHeight="50" prefWidth="150" text="Repeat:Off">
                      <graphic>
@@ -93,8 +108,15 @@
                            </image>
                         </ImageView>
                      </graphic>
+                     <style>
+                     -fx-background-radius:50em;
+                     </style>
                   </Button>
-                  <Button fx:id="shuffleButton" onAction="#toggleShuffle" prefHeight="50" prefWidth="150" text="Shuffle: OFF" />
+                  <Button fx:id="shuffleButton" onAction="#toggleShuffle" prefHeight="50" prefWidth="150" text="Shuffle: OFF">
+                  <style>
+                     -fx-background-radius:50em;
+                  </style>
+                  </Button>
                   <!-- <Button prefWidth="150" prefHeight="50" onAction="#openFile" fx:id="openButton" text = "Open File">
                      <graphic>
                         <ImageView fitHeight="30" fitWidth="30">
