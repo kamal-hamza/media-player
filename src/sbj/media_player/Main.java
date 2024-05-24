@@ -12,6 +12,7 @@ package sbj.media_player;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -22,7 +23,7 @@ import java.io.IOException;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Playlist.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Root.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Media Player");
         stage.setScene(scene);

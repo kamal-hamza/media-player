@@ -23,6 +23,7 @@ public class Playlist {
     private static Playlist instance;
     private int currentTrackIndex;
     private Set<File> songSet;
+    private ObservableList<File> obsPlayList = FXCollections.observableArrayList();
     
     public Playlist() {
         songSet = new HashSet<>();
@@ -47,6 +48,8 @@ public class Playlist {
         s += "]";
         return s;
     }
+
+    private void playlistViewRefresh() {playlistView.setItems(obsPlayList);}
 
     protected ListView<File> getPlaylist() {
         return this.playlistView;

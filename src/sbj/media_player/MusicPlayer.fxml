@@ -1,113 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 
-<BorderPane minHeight="650.0" minWidth="600.0" stylesheets="@style.css" prefHeight="442.0" prefWidth="1002.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sbj.media_player.Music_Player">
+<BorderPane minHeight="650.0" minWidth="700.0" prefHeight="442.0" prefWidth="1100.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sbj.media_player.Music_Player">
 <top>
-        <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;"></HBox>
+        <HBox alignment="CENTER" spacing="10" style="-fx-padding: 10;" />
     </top>
-    <left>
-      <VBox style="-fx-padding: 30;" alignment="CENTER">
-         <Label text="Library:" />
-      </VBox>
-    </left>
     <center>
-        <VBox alignment="CENTER">
-            <Label text="Currently Playing:" style="-fx-font-family: 'Times New Roman'; -fx-font-size: 25px;" />
-            <Label fx:id="titleLabel" text="Title" />
-        </VBox>
+      <Pane>
+         <children>
+               <Label layoutX="147.0" layoutY="119.0" style="-fx-font-family: 'Times New Roman'; -fx-font-size: 25px;" text="Currently Playing:" />
+               <Label fx:id="titleLabel" layoutX="204.0" layoutY="162.0" text="Title" />
+               <Label layoutX="181.0" layoutY="205.0" text="Album:" />
+               <Label layoutX="162.0" layoutY="226.0" text="Composer:" />
+               <Label layoutX="184.0" layoutY="251.0" text="Genre:" />
+               <Label layoutX="186.0" layoutY="275.0" text="Artist:" />
+            <Label fx:id="albumLabel" layoutX="238.0" layoutY="205.0" />
+            <Label fx:id="composerLabel" layoutX="238.0" layoutY="226.0" />
+            <Label fx:id="genreLabel" layoutX="238.0" layoutY="251.0" />
+            <Label fx:id="artistLabel" layoutX="238.0" layoutY="275.0" />
+         </children>
+      </Pane>
     </center>
-    <right>
-        <VBox spacing="10" style="-fx-padding: 30;" alignment="CENTER">
-            <Label text="Composer:" />
-            <Label fx:id="composerLabel"/>
-            <Label text="Genre:" />
-            <Label fx:id="genreLabel"/>
-            <Label text="Artist:" />
-            <Label fx:id="artistLabel"/>
-            <Label text="Album:" />
-            <Label fx:id="albumLabel"/>
-        </VBox>
-    </right>
     <bottom>
         <BorderPane>
             <top>
-                <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
+                <HBox alignment="CENTER" spacing="10" style="-fx-padding: 10;">
                     <Label fx:id="durationLabel" text="0:00" />
-                    <Slider maxHeight="10" HBox.hgrow="ALWAYS"  maxWidth="800" fx:id="musicSlider"></Slider>
+                    <Slider fx:id="musicSlider" maxHeight="10" maxWidth="800" HBox.hgrow="ALWAYS" />
                     <Label fx:id="durationLabel2" text="0:00" />
                 </HBox>
             </top>
             <bottom>
-               <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
-                  <Button prefWidth="150" prefHeight="50" onAction="#play" text="Play" fx:id="playButton">
+               <HBox alignment="CENTER" spacing="10" style="-fx-padding: 10;">
+                  <Button fx:id="playButton" onAction="#play" prefHeight="50" prefWidth="150" text="Play">
                      <graphic>
                         <ImageView fitHeight="30" fitWidth="31">
                            <image>
-                              <Image url="file:src\sbj\media_player\Assets\play_icon.png"/>
+                              <Image url="file:src\sbj\media_player\Assets\play_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button prefWidth="150" prefHeight="50" onAction="#stop" text="Stop">
+                  <Button onAction="#stop" prefHeight="50" prefWidth="150" text="Stop">
                   <graphic>
                         <ImageView fitHeight="30" fitWidth="30">
                            <image>
-                              <Image url="file:src\sbj\media_player\Assets\stop_icon.png"/>
+                              <Image url="file:src\sbj\media_player\Assets\stop_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button prefWidth="150" prefHeight="50" onAction="#pause" text="Pause">
+                  <Button onAction="#pause" prefHeight="50" prefWidth="150" text="Pause">
                      <graphic>
                         <ImageView fitHeight="30" fitWidth="30">
                            <image>
-                              <Image url="file:src\sbj\media_player\Assets\pause_icon.png"/>
+                              <Image url="file:src\sbj\media_player\Assets\pause_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>   
-                  <Button prefWidth="150" prefHeight="50" onAction="#back" text="Back">
+                  <Button onAction="#back" prefHeight="50" prefWidth="150" text="Back">
                      <graphic>
                         <ImageView fitHeight="30" fitWidth="30">
                            <image>
-                              <Image url="file:src\sbj\media_player\Assets\back_icon.png"/>
+                              <Image url="file:src\sbj\media_player\Assets\back_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button prefWidth="150" prefHeight="50" onAction="#forward" text="Forward">
+                  <Button onAction="#forward" prefHeight="50" prefWidth="150" text="Forward">
                      <graphic>
                         <ImageView fitHeight="30" fitWidth="30">
                            <image>
-                              <Image url="file:src\sbj\media_player\Assets\forward_icon.png"/>
+                              <Image url="file:src\sbj\media_player\Assets\forward_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id = "repeatButton" prefWidth="150" prefHeight="50" onAction="#toggleRepeat" text="Repeat:Off">
+                  <Button fx:id="repeatButton" onAction="#toggleRepeat" prefHeight="50" prefWidth="150" text="Repeat:Off">
                      <graphic>
                         <ImageView fitHeight="30" fitWidth="30">
                            <image>
-                              <Image url="file:src\sbj\media_player\Assets\repeat_icon.png"/>
+                              <Image url="file:src\sbj\media_player\Assets\repeat_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id  = "shuffleButton" prefWidth="150" prefHeight="50" onAction="#toggleShuffle" text="Shuffle: OFF"/>
+                  <Button fx:id="shuffleButton" onAction="#toggleShuffle" prefHeight="50" prefWidth="150" text="Shuffle: OFF" />
                   <!-- <Button prefWidth="150" prefHeight="50" onAction="#openFile" fx:id="openButton" text = "Open File">
                      <graphic>
                         <ImageView fitHeight="30" fitWidth="30">
@@ -117,9 +104,19 @@
                         </ImageView>
                      </graphic>
                   </Button> -->
-                  <Slider min="0.0" max="100.0" maxWidth="150" maxHeight="10" fx:id="volumeSlider"></Slider>
+                  <Slider fx:id="volumeSlider" max="100.0" maxHeight="10" maxWidth="150" min="0.0" />
                 </HBox>
             </bottom>
         </BorderPane>
     </bottom>
+   <left>
+      <Pane fx:id="libraryPane" prefHeight="200.0" prefWidth="310.0" BorderPane.alignment="CENTER">
+        <fx:include source="Library.fxml" />
+      </Pane>
+   </left>
+   <right>
+      <Pane fx:id="playlistPane" prefHeight="200.0" prefWidth="310.0" BorderPane.alignment="CENTER">
+         <fx:include source="Playlist.fxml" />
+      </Pane>
+   </right>
 </BorderPane>
