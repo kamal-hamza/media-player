@@ -22,6 +22,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
@@ -98,6 +100,16 @@ public class Music_Player {
     @FXML
     private Slider musicSlider;
 
+    @FXML
+    private Button togglePlayPauseButton;
+
+    @FXML
+    private ImageView togglePlayPauseImageView;
+
+    private final Image playIcon = new Image("file:src/sbj/media_player/Assets/play_icon.png");
+    private final Image pauseIcon = new Image("file:src/sbj/media_player/Assets/pause_icon.png");
+
+
     private double volume = 50.0;
 
     public Music_Player() {
@@ -108,16 +120,14 @@ public class Music_Player {
     }
 
     @FXML
-    protected void play() {
-        System.out.println(library.musicList);
+    protected void togglePlayPause() {
         if (MP != null && MP.getStatus() == MediaPlayer.Status.PLAYING) {
-            return;
-        }
-        if (MP != null && (MP.getStatus() == MediaPlayer.Status.STOPPED | MP.getStatus() == MediaPlayer.Status.PAUSED)) {
-            //title=;
+            MP.pause();
+            togglePlayPauseImageView.setImage(playIcon);
+        } else if (MP != null && (MP.getStatus() == MediaPlayer.Status.PAUSED || MP.getStatus() == MediaPlayer.Status.STOPPED)) {
             MP.play();
-        }
-        else {
+            togglePlayPauseImageView.setImage(pauseIcon);
+        } else {
             if (library.musicList.isEmpty()) {
                 System.out.println("Library is empty");
                 return;
@@ -131,11 +141,9 @@ public class Music_Player {
 
             if (repeat) {
                 playLibrary(library.musicList);
-            }
-            else {
+            } else {
                 playLibrary(library.musicList);
             }
-
         }
     }
 
@@ -169,6 +177,7 @@ public class Music_Player {
         initializeMusicSlider();
         System.out.println("MP initialize");
         MP.play();
+        togglePlayPauseImageView.setImage(pauseIcon);
         System.out.println("Playing: " + media.getSource());
         MP.setOnEndOfMedia(() -> {
             MP.dispose();
@@ -182,7 +191,7 @@ public class Music_Player {
             library.setCurrentTrackIndex(currentTrackIndex);
             viewInfo();
             if (repeat || currentTrackIndex < lib.size()) {
-            play();
+            togglePlayPause();
             }
         });
     }
@@ -190,11 +199,6 @@ public class Music_Player {
     @FXML
     protected void openFile() {
         library.addFile();
-    }
-
-    @FXML
-    protected void pause() {
-        MP.pause();
     }
 
     @FXML
@@ -222,7 +226,7 @@ public class Music_Player {
                 library.setCurrentTrackIndex(currentTrackIndex);
                 MP.dispose();
                 viewInfo();
-                play();
+                togglePlayPause();
             }
             else {
                 System.out.println("Cant go back");
@@ -241,7 +245,7 @@ public class Music_Player {
                 library.setCurrentTrackIndex(currentTrackIndex);
                 MP.dispose();
                 viewInfo();
-                play();
+                togglePlayPause();
             }
             else {
                 System.out.println("Cant go forward");
@@ -254,7 +258,15 @@ public class Music_Player {
 
     @FXML
     protected void stop() {
-        MP.stop();
+        if (MP != null)
+        {
+            MP.stop();
+            togglePlayPauseImageView.setImage(playIcon);
+        }
+        else
+        {
+            System.out.println("Nothing is Playing");
+        }
     }
 
     protected void viewInfo() {

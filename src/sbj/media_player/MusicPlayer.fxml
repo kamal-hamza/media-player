@@ -53,16 +53,16 @@
             </top>
             <bottom>
                <HBox spacing="10" alignment="CENTER" style="-fx-padding: 10;">
-                  <Button prefWidth="150" prefHeight="50" onAction="#play" text="Play" fx:id="playButton">
-                     <graphic>
-                        <ImageView fitHeight="30" fitWidth="31">
-                           <image>
-                              <Image url="file:src\sbj\media_player\Assets\play_icon.png"/>
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button prefWidth="150" prefHeight="50" onAction="#stop" text="Stop">
+                  <Button fx:id="togglePlayPauseButton" prefWidth="150" prefHeight="50" onAction="#togglePlayPause">
+                        <graphic>
+                            <ImageView fx:id="togglePlayPauseImageView" fitHeight="30" fitWidth="30">
+                                <image>
+                                    <Image url="file:src/sbj/media_player/Assets/play_icon.png"/>
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                  <Button prefWidth="150" prefHeight="50" onAction="#stop">
                   <graphic>
                         <ImageView fitHeight="30" fitWidth="30">
                            <image>
@@ -71,16 +71,8 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button prefWidth="150" prefHeight="50" onAction="#pause" text="Pause">
-                     <graphic>
-                        <ImageView fitHeight="30" fitWidth="30">
-                           <image>
-                              <Image url="file:src\sbj\media_player\Assets\pause_icon.png"/>
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>   
-                  <Button prefWidth="150" prefHeight="50" onAction="#back" text="Back">
+                   
+                  <Button prefWidth="150" prefHeight="50" onAction="#back">
                      <graphic>
                         <ImageView fitHeight="30" fitWidth="30">
                            <image>
@@ -89,7 +81,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button prefWidth="150" prefHeight="50" onAction="#forward" text="Forward">
+                  <Button prefWidth="150" prefHeight="50" onAction="#forward">
                      <graphic>
                         <ImageView fitHeight="30" fitWidth="30">
                            <image>
