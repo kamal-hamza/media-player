@@ -90,13 +90,13 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id = "repeatButton" prefWidth="150" prefHeight="50" onAction="#toggleRepeat" text="Repeat:Off">
-                     <graphic>
-                        <ImageView fitHeight="30" fitWidth="30">
-                           <image>
-                              <Image url="file:src\sbj\media_player\Assets\repeat_icon.png"/>
-                           </image>
-                        </ImageView>
+                  <Button fx:id = "repeatButton" prefWidth="150" prefHeight="50" onAction="#toggleRepeat">
+                        <graphic>
+                            <ImageView fx:id="repeatImageView" fitHeight="30" fitWidth="30">
+                                <image>
+                                    <Image url="file:src/sbj/media_player/Assets/repeat_false_icon.png"/>
+                                </image>
+                            </ImageView>
                      </graphic>
                   </Button>
                   <Button fx:id  = "shuffleButton" prefWidth="150" prefHeight="50" onAction="#toggleShuffle" text="Shuffle: OFF"/>

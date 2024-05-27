@@ -109,6 +109,12 @@ public class Music_Player {
     private final Image playIcon = new Image("file:src/sbj/media_player/Assets/play_icon.png");
     private final Image pauseIcon = new Image("file:src/sbj/media_player/Assets/pause_icon.png");
 
+    @FXML
+    private ImageView repeatImageView;
+
+    private final Image repeatIcon = new Image("file:src/sbj/media_player/Assets/repeat_icon.png");
+    private final Image repeatFalseIcon = new Image("file:src/sbj/media_player/Assets/repeat_false_icon.png");
+
 
     private double volume = 50.0;
 
@@ -205,7 +211,7 @@ public class Music_Player {
     protected void toggleRepeat() {
         repeat = !repeat;
         System.out.println(repeat);
-        repeatButton.setText(repeat ? "Repeat:ON" : "Repeat:OFF");
+        repeatImageView.setImage(repeat ? repeatIcon : repeatFalseIcon);
         if (MP != null && MP.getStatus() == MediaPlayer.Status.PLAYING) {
             MP.setVolume (volume / 100);
         }
