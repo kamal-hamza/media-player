@@ -115,6 +115,14 @@ public class Music_Player {
     private final Image repeatIcon = new Image("file:src/sbj/media_player/Assets/repeat_icon.png");
     private final Image repeatFalseIcon = new Image("file:src/sbj/media_player/Assets/repeat_false_icon.png");
 
+    @FXML
+    private ImageView shuffleImageView;
+
+    private final Image shuffleIcon = new Image("file:src/sbj/media_player/Assets/shuffle_icon.png");
+    private final Image shuffleFalseIcon = new Image("file:src/sbj/media_player/Assets/shuffle_false_icon.png");
+
+    
+
 
     private double volume = 50.0;
 
@@ -221,7 +229,7 @@ public class Music_Player {
     protected void toggleShuffle() {
         shuffle = !shuffle;
         System.out.println(shuffle);
-        shuffleButton.setText(shuffle ? "Shuffle: ON" : "Shuffle: OFF");
+        shuffleImageView.setImage( shuffle ? shuffleIcon : shuffleFalseIcon);
     }
 
     @FXML

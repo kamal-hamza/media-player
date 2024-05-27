@@ -99,7 +99,15 @@
                             </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id  = "shuffleButton" prefWidth="150" prefHeight="50" onAction="#toggleShuffle" text="Shuffle: OFF"/>
+                  <Button fx:id  = "shuffleButton" prefWidth="150" prefHeight="50" onAction="#toggleShuffle">
+                  <graphic>
+                     <ImageView fx:id="shuffleImageView" fitHeight="30" fitWidth="30">
+                           <image>
+                              <Image url="file:src/sbj/media_player/Assets/shuffle_false_icon.png"/>
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
                   <Button prefWidth="150" prefHeight="50" onAction="#openFile" fx:id="openButton" text = "Open File">
                   <graphic>
                      <ImageView fitHeight="30" fitWidth="30">
