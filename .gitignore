@@ -1,5 +1,8 @@
 # Ignore all files except the src and tests folders
 *
 !src/
-!src/sbj/media_player
+!src/sbj/
+!src/sbj/media_player/
+!src/sbj/media_player/style.css
+!src/sbj/media_player/Assets/**
 !test/
