@@ -1,0 +1,39 @@
+.button {
+    -fx-background-color: black;
+    -fx-text-fill: white;
+    -fx-background-radius: 30;
+}
+
+.button:hover  {
+    -fx-background-color: #333333;
+}
+
+.slider .thumb {
+    -fx-background-color: black;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+    -fx-effect: null; /* Reset any effects */
+    -fx-background-insets: 0;
+}
+
+.slider .thumb:hover {
+    -fx-background-color: black; /* Keep the background color the same when hovered */
+    -fx-scale-x: 1.1; /* Increase the scale in x-direction */
+    -fx-scale-y: 1.1; /* Increase the scale in y-direction */
+    -fx-background-radius: 50; /* Optional: adjust the border-radius for better appearance */
+}
+
+.slider::before {
+    -fx-background-color: black;
+    -fx-background-insets: 0, 0 0 0 0.5;
+}
+
+.slider .track {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+}
+
+.VBox {
+    border: black;
+}
+
