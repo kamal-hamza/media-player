@@ -13,7 +13,7 @@
             <graphic>
                 <ImageView fitHeight="30" fitWidth="30">
                     <image>
-                        <Image url="https://cdn-icons-png.flaticon.com/512/1092/1092216.png" />
+                        <Image url="file:src\sbj\media_player\Assets\open_file-01.png" />
                     </image>
                 </ImageView>
             </graphic>
