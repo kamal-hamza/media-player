@@ -1,3 +1,6 @@
+/* style.css */
+
+/* General button styling */
 .button {
     -fx-background-color: black;
     -fx-text-fill: white;
@@ -8,6 +11,7 @@
     -fx-background-color: #333333;
 }
 
+/* Slider thumb styling */
 .slider .thumb {
     -fx-background-color: black;
     -fx-scale-x: 1.0;
@@ -33,7 +37,60 @@
     -fx-background-insets: 0;
 }
 
+/* VBox border styling */
 .VBox {
     border: black;
 }
 
+/* Currently playing pane styling */
+#currentlyPlayingPane {
+    -fx-padding: 20;
+}
+
+.currentlyPlayingLabel {
+    -fx-font-family: 'Times New Roman';
+    -fx-font-size: 25px;
+    -fx-text-alignment: center;
+}
+
+.currentlyPlayingInfo {
+    -fx-font-family: 'Arial';
+    -fx-font-size: 18px;
+    -fx-text-alignment: center;
+}
+
+#libraryPane, #playlistPane {
+    -fx-font-size: 15px;
+    -fx-padding: 10;
+}
+
+#treeView, #playlistView {
+    -fx-border-color: rgb(80, 80, 80);
+    -fx-border-width: 1px;
+}
+
+#treeView:focused, #playlistView:focused {
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+}
+
+.library-label, .playlist-label {
+    -fx-font-family: 'Arial';
+    -fx-text-fill: black;
+}
+
+.rounded-button {
+    -fx-background-radius: 50em;
+    -fx-background-color: black;
+    -fx-text-fill: white;
+}
+
+.rounded-button:hover {
+    -fx-background-color: #333333;
+}
+
+
+.tree-cell:filled:selected {
+    -fx-background-color: black;
+    -fx-text-fill: white;
+}

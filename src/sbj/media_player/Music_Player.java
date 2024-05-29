@@ -28,6 +28,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Music_Player {
     @FXML
@@ -99,6 +101,27 @@ public class Music_Player {
     @FXML
     private Slider musicSlider;
 
+    @FXML
+    private Button togglePlayPauseButton;
+
+    @FXML
+    private ImageView togglePlayPauseImageView;
+
+    private final Image playIcon = new Image("file:src/sbj/media_player/Assets/play_icon.png");
+    private final Image pauseIcon = new Image("file:src/sbj/media_player/Assets/pause_icon.png");
+
+    @FXML
+    private ImageView repeatImageView;
+
+    private final Image repeatIcon = new Image("file:src/sbj/media_player/Assets/repeat_icon.png");
+    private final Image repeatFalseIcon = new Image("file:src/sbj/media_player/Assets/repeat_false_icon.png");
+
+    @FXML
+    private ImageView shuffleImageView;
+
+    private final Image shuffleIcon = new Image("file:src/sbj/media_player/Assets/shuffle_icon.png");
+    private final Image shuffleFalseIcon = new Image("file:src/sbj/media_player/Assets/shuffle_false_icon.png");
+
     private double volume = 50.0;
 
     public Music_Player() {
@@ -109,16 +132,14 @@ public class Music_Player {
     }
 
     @FXML
-    protected void play() {
-        System.out.println(playlist.getPlaylist());
+    protected void togglePlayPause() {
         if (MP != null && MP.getStatus() == MediaPlayer.Status.PLAYING) {
-            return;
-        }
-        if (MP != null && (MP.getStatus() == MediaPlayer.Status.STOPPED | MP.getStatus() == MediaPlayer.Status.PAUSED)) {
-            //title=;
+            MP.pause();
+            togglePlayPauseImageView.setImage(playIcon);
+        } else if (MP != null && (MP.getStatus() == MediaPlayer.Status.PAUSED || MP.getStatus() == MediaPlayer.Status.STOPPED)) {
             MP.play();
-        }
-        else {
+            togglePlayPauseImageView.setImage(pauseIcon);
+        } else {
             if (playlist.getPlaylist().getItems() == null) {
                 System.out.println("Library is empty");
                 return;
@@ -169,6 +190,7 @@ public class Music_Player {
         initializeVolumeSlider();
         initializeMusicSlider();
         System.out.println("MP initialize");
+        togglePlayPauseImageView.setImage(pauseIcon);
         MP.play();
         System.out.println("Playing: " + media.getSource());
         MP.setOnEndOfMedia(() -> {
@@ -183,7 +205,7 @@ public class Music_Player {
             playlist.setCurrentTrackIndex(currentTrackIndex);
             viewInfo();
             if (repeat || currentTrackIndex < lib.getItems().size()) {
-            play();
+            togglePlayPause();
             }
         });
     }
@@ -194,15 +216,10 @@ public class Music_Player {
     // }
 
     @FXML
-    protected void pause() {
-        MP.pause();
-    }
-
-    @FXML
     protected void toggleRepeat() {
         repeat = !repeat;
         System.out.println(repeat);
-        repeatButton.setText(repeat ? "Repeat:ON" : "Repeat:OFF");
+        repeatImageView.setImage(repeat ? repeatIcon : repeatFalseIcon);
         if (MP != null && MP.getStatus() == MediaPlayer.Status.PLAYING) {
             MP.setVolume (volume / 100);
         }
@@ -212,7 +229,7 @@ public class Music_Player {
     protected void toggleShuffle() {
         shuffle = !shuffle;
         System.out.println(shuffle);
-        shuffleButton.setText(shuffle ? "Shuffle: ON" : "Shuffle: OFF");
+        shuffleImageView.setImage( shuffle ? shuffleIcon : shuffleFalseIcon);
     }
 
     @FXML
@@ -223,7 +240,7 @@ public class Music_Player {
                 playlist.setCurrentTrackIndex(currentTrackIndex);
                 MP.dispose();
                 viewInfo();
-                play();
+                togglePlayPause();
             }
             else {
                 System.out.println("Cant go back");
@@ -242,7 +259,7 @@ public class Music_Player {
                 playlist.setCurrentTrackIndex(currentTrackIndex);
                 MP.dispose();
                 viewInfo();
-                play();
+                togglePlayPause();
             }
             else {
                 System.out.println("Cant go forward");

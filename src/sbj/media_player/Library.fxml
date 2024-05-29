@@ -7,31 +7,20 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="libraryPane" prefHeight="475.0" prefWidth="310.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sbj.media_player.Library">
-   <children>
-         <Button alignment="CENTER" layoutX="229.0" layoutY="430.0" mnemonicParsing="false" onAction="#selectFolder">
-             <graphic>
-                 <ImageView fitHeight="30" fitWidth="30">
-                     <image>
-                         <Image url="https://cdn-icons-png.flaticon.com/512/1092/1092216.png" />
-                     </image>
-                 </ImageView>
-             </graphic>
-                <style>
-                -fx-background-radius:50em;
-            </style>
-         </Button>
-         <Button alignment="CENTER" layoutX="45.0" layoutY="436.0" mnemonicParsing="false" onAction="#selectFile" text="Select File">
-         <style>
-            -fx-background-radius:50em;
-        </style>
-            </Button>
-         <Button alignment="CENTER" layoutX="154.0" layoutY="436.0" mnemonicParsing="false" onAction="#selectMusic" text="Add">
-         <style>
-            -fx-background-radius:50em;
-            </style>
+<Pane fx:id="libraryPane" prefHeight="475.0" prefWidth="310.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sbj.media_player.Library">
+    <children>
+        <Button alignment="CENTER" layoutX="229.0" layoutY="430.0" mnemonicParsing="false" onAction="#selectFolder">
+            <graphic>
+                <ImageView fitHeight="30" fitWidth="30">
+                    <image>
+                        <Image url="https://cdn-icons-png.flaticon.com/512/1092/1092216.png" />
+                    </image>
+                </ImageView>
+            </graphic>
         </Button>
-         <TreeView fx:id="treeView" layoutY="36.0" prefHeight="375.0" prefWidth="310.0" />
-      <Label layoutX="137.0" layoutY="14.0" text="Library" />
-   </children>
+        <Button alignment="CENTER" layoutX="45.0" layoutY="436.0" mnemonicParsing="false" onAction="#selectFile" text="Select File" />
+        <Button alignment="CENTER" layoutX="154.0" layoutY="436.0" mnemonicParsing="false" onAction="#selectMusic" text="Add" />
+        <TreeView fx:id="treeView" layoutY="36.0" prefHeight="375.0" prefWidth="310.0" />
+        <Label layoutX="137.0" layoutY="14.0" text="Library" />
+    </children>
 </Pane>
