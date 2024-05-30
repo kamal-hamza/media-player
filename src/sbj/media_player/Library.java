@@ -18,8 +18,7 @@ public class Library {
     private TreeView<File> treeView;
     private TreeItem<File> root;
     private Set<File> songSet;
-    private Playlist playlist;
-    
+        
 
     @FXML
     private void initialize() {
@@ -29,7 +28,6 @@ public class Library {
         root.setExpanded(true);
         treeView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         treeView.setShowRoot(false);
-        playlist = Playlist.getInstance();
     }
 
     // Add folder containing multiple files
@@ -78,7 +76,7 @@ public class Library {
     protected void addToPlaylist(ObservableList<TreeItem<File>> items) {
         for (TreeItem<File> item : items) {
             File song = item.getValue();
-            playlist.add(song);
+            Playlist.getInstance().add(song);
         }
     }
 

@@ -125,7 +125,7 @@ public class Music_Player {
     private double volume = 50.0;
 
     public Music_Player() {
-        playlist = Playlist.getInstance();
+        // playlist = Playlist.getInstance();
         currentTrackIndex = 0;
         repeat = false;
         shuffle = false;
@@ -140,22 +140,22 @@ public class Music_Player {
             MP.play();
             togglePlayPauseImageView.setImage(pauseIcon);
         } else {
-            if (playlist.getPlaylist().getItems() == null) {
+            if (Playlist.getInstance().getPlaylist().getItems() == null) {
                 System.out.println("Library is empty");
                 return;
             }
-            if (currentTrackIndex >= playlist.getPlaylist().getItems().size()) {
+            if (currentTrackIndex >= Playlist.getInstance().getPlaylist().getItems().size()) {
                 System.out.println("Reached end of library");
                 currentTrackIndex = 0;
-                playlist.setCurrentTrackIndex(currentTrackIndex);
+                Playlist.getInstance().setCurrentTrackIndex(currentTrackIndex);
                 return;
             }
 
             if (repeat) {
-                playLibrary(playlist.getPlaylist());
+                playLibrary(Playlist.getInstance().getPlaylist());
             }
             else {
-                playLibrary(playlist.getPlaylist());
+                playLibrary(Playlist.getInstance().getPlaylist());
             }
 
         }
@@ -200,7 +200,7 @@ public class Music_Player {
                 currentTrackIndex++;
             }
             if (currentTrackIndex < lib.getItems().size()) {
-                playlist.setCurrentTrackIndex(currentTrackIndex);
+                Playlist.getInstance().setCurrentTrackIndex(currentTrackIndex);
                 viewInfo();
                 togglePlayPause();
                 MP.setVolume(volumeSlider.getValue() / 100);
@@ -235,7 +235,7 @@ public class Music_Player {
         if (MP != null) {
             if (currentTrackIndex - 1 >= 0) {
                 currentTrackIndex--;
-                playlist.setCurrentTrackIndex(currentTrackIndex);
+                Playlist.getInstance().setCurrentTrackIndex(currentTrackIndex);
                 MP.dispose();
                 viewInfo();
                 togglePlayPause();
@@ -253,9 +253,9 @@ public class Music_Player {
     @FXML
     protected void forward() {
         if (MP != null) {
-            if (currentTrackIndex + 1 <= playlist.getPlaylist().getItems().size() - 1) {
+            if (currentTrackIndex + 1 <= Playlist.getInstance().getPlaylist().getItems().size() - 1) {
                 currentTrackIndex++;
-                playlist.setCurrentTrackIndex(currentTrackIndex);
+                Playlist.getInstance().setCurrentTrackIndex(currentTrackIndex);
                 MP.dispose();
                 viewInfo();
                 togglePlayPause();
@@ -277,7 +277,7 @@ public class Music_Player {
 
     protected void viewInfo() {
         System.out.println(currentTrackIndex);
-        File file = playlist.getPlaylist().getItems().get(playlist.getCurrentTrackIndex());
+        File file = Playlist.getInstance().getPlaylist().getItems().get(Playlist.getInstance().getCurrentTrackIndex());
         System.out.println(currentTrackIndex);
         // Getting metadata for mp3 file
         try {

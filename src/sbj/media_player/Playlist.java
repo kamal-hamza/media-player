@@ -29,13 +29,19 @@ public class Playlist {
         songSet = new HashSet<>();
         System.out.print(songSet.toString());
         // files = FXCollections.observableArrayList();
-        playlistView = new ListView<>();
+        // playlistView = new ListView<>(obsPlayList);
+    }
+
+    @FXML
+    private void initialize() {
+        playlistView.setItems(obsPlayList);
+        instance = this;
     }
 
     protected void add(File file) {
         if (!songSet.contains(file)) {
             songSet.add(file);
-            playlistView.getItems().add(file);
+            obsPlayList.add(file);
             System.out.println(printToString());
         }
     }
@@ -64,9 +70,9 @@ public class Playlist {
     }
 
     protected static Playlist getInstance() {
-        if (instance == null) {
-            instance = new Playlist();
-        }
+        // if (instance == null) {
+        //     instance = new Playlist();
+        // }
         return instance;
     }
 }
