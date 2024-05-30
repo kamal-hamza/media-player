@@ -194,18 +194,16 @@ public class Music_Player {
         MP.play();
         System.out.println("Playing: " + media.getSource());
         MP.setOnEndOfMedia(() -> {
+            double tempVolume = MP.getVolume();
             MP.dispose();
-            if (repeat) {
-                if (currentTrackIndex == lib.getItems().size() - 1) {
-                    currentTrackIndex = 0;
-                }
-            } else {
+            if (!repeat) {
                 currentTrackIndex++;
             }
-            playlist.setCurrentTrackIndex(currentTrackIndex);
-            viewInfo();
-            if (repeat || currentTrackIndex < lib.getItems().size()) {
-            togglePlayPause();
+            if (currentTrackIndex < lib.getItems().size()) {
+                playlist.setCurrentTrackIndex(currentTrackIndex);
+                viewInfo();
+                togglePlayPause();
+                MP.setVolume(volumeSlider.getValue() / 100);
             }
         });
     }
@@ -241,6 +239,7 @@ public class Music_Player {
                 MP.dispose();
                 viewInfo();
                 togglePlayPause();
+                MP.setVolume(volumeSlider.getValue() / 100);
             }
             else {
                 System.out.println("Cant go back");
@@ -260,6 +259,7 @@ public class Music_Player {
                 MP.dispose();
                 viewInfo();
                 togglePlayPause();
+                MP.setVolume(volumeSlider.getValue() / 100);
             }
             else {
                 System.out.println("Cant go forward");
