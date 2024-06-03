@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
+import java.util.concurrent.TimeUnit;
 
+import javafx.stage.FileChooser;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
@@ -21,18 +23,19 @@ import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Music_Player {
     @FXML
-    private Library library;
+    private Playlist playlist;
 
     @FXML
     private List<File> shuffledLibrary;
@@ -121,13 +124,10 @@ public class Music_Player {
     private final Image shuffleIcon = new Image("file:src/sbj/media_player/Assets/shuffle_icon.png");
     private final Image shuffleFalseIcon = new Image("file:src/sbj/media_player/Assets/shuffle_false_icon.png");
 
-    
-
-
     private double volume = 50.0;
 
     public Music_Player() {
-        library = new Library();
+        // playlist = Playlist.getInstance();
         currentTrackIndex = 0;
         repeat = false;
         shuffle = false;
@@ -142,29 +142,31 @@ public class Music_Player {
             MP.play();
             togglePlayPauseImageView.setImage(pauseIcon);
         } else {
-            if (library.musicList.isEmpty()) {
+            if (Playlist.getInstance().getPlaylist().getItems() == null) {
                 System.out.println("Library is empty");
                 return;
             }
-            if (currentTrackIndex >= library.musicList.size()) {
+            if (currentTrackIndex >= Playlist.getInstance().getPlaylist().getItems().size()) {
                 System.out.println("Reached end of library");
                 currentTrackIndex = 0;
-                library.setCurrentTrackIndex(currentTrackIndex);
+                Playlist.getInstance().setCurrentTrackIndex(currentTrackIndex);
                 return;
             }
 
             if (repeat) {
-                playLibrary(library.musicList);
-            } else {
-                playLibrary(library.musicList);
+                playLibrary(Playlist.getInstance().getPlaylist());
             }
+            else {
+                playLibrary(Playlist.getInstance().getPlaylist());
+            }
+
         }
     }
 
-    private void playLibrary(List<File> lib) {
+    private void playLibrary(ListView<File> lib) {
         System.out.println("playing");
-        File file = lib.get(currentTrackIndex);
-        currentTrackIndex = lib.indexOf(file);
+        File file = lib.getItems().get(currentTrackIndex);
+        currentTrackIndex = lib.getItems().indexOf(file);
         viewInfo();
         try {
             InputStream input = new FileInputStream(file);
@@ -190,30 +192,28 @@ public class Music_Player {
         initializeVolumeSlider();
         initializeMusicSlider();
         System.out.println("MP initialize");
-        MP.play();
         togglePlayPauseImageView.setImage(pauseIcon);
+        MP.play();
         System.out.println("Playing: " + media.getSource());
         MP.setOnEndOfMedia(() -> {
+            double tempVolume = MP.getVolume();
             MP.dispose();
-            if (repeat) {
-                if (currentTrackIndex == lib.size() - 1) {
-                    currentTrackIndex = 0;
-                }
-            } else {
+            if (!repeat) {
                 currentTrackIndex++;
             }
-            library.setCurrentTrackIndex(currentTrackIndex);
-            viewInfo();
-            if (repeat || currentTrackIndex < lib.size()) {
-            togglePlayPause();
+            if (currentTrackIndex < lib.getItems().size()) {
+                Playlist.getInstance().setCurrentTrackIndex(currentTrackIndex);
+                viewInfo();
+                togglePlayPause();
+                MP.setVolume(volumeSlider.getValue() / 100);
             }
         });
     }
     
-    @FXML
-    protected void openFile() {
-        library.addFile();
-    }
+    // @FXML
+    // protected void openFile() {
+    //     playlist.addFile();
+    // }
 
     @FXML
     protected void toggleRepeat() {
@@ -237,10 +237,11 @@ public class Music_Player {
         if (MP != null) {
             if (currentTrackIndex - 1 >= 0) {
                 currentTrackIndex--;
-                library.setCurrentTrackIndex(currentTrackIndex);
+                Playlist.getInstance().setCurrentTrackIndex(currentTrackIndex);
                 MP.dispose();
                 viewInfo();
                 togglePlayPause();
+                MP.setVolume(volumeSlider.getValue() / 100);
             }
             else {
                 System.out.println("Cant go back");
@@ -254,12 +255,13 @@ public class Music_Player {
     @FXML
     protected void forward() {
         if (MP != null) {
-            if (currentTrackIndex + 1 <= library.musicList.size() - 1) {
+            if (currentTrackIndex + 1 <= Playlist.getInstance().getPlaylist().getItems().size() - 1) {
                 currentTrackIndex++;
-                library.setCurrentTrackIndex(currentTrackIndex);
+                Playlist.getInstance().setCurrentTrackIndex(currentTrackIndex);
                 MP.dispose();
                 viewInfo();
                 togglePlayPause();
+                MP.setVolume(volumeSlider.getValue() / 100);
             }
             else {
                 System.out.println("Cant go forward");
@@ -272,20 +274,12 @@ public class Music_Player {
 
     @FXML
     protected void stop() {
-        if (MP != null)
-        {
-            MP.stop();
-            togglePlayPauseImageView.setImage(playIcon);
-        }
-        else
-        {
-            System.out.println("Nothing is Playing");
-        }
+        MP.stop();
     }
 
     protected void viewInfo() {
         System.out.println(currentTrackIndex);
-        File file = library.musicList.get(library.getCurrentTrackIndex());
+        File file = Playlist.getInstance().getPlaylist().getItems().get(Playlist.getInstance().getCurrentTrackIndex());
         System.out.println(currentTrackIndex);
         // Getting metadata for mp3 file
         try {
@@ -363,4 +357,50 @@ public class Music_Player {
             System.out.println("No media is Playing");
         }
     }
+    @FXML
+    protected void runTests() {
+        System.out.println("Beginning Testing");
+        this.loadTest();
+        this.playTest();
+        this.durationTest();
+        //assert
+    }
+
+    private void loadTest() {
+        File test = new File("./src/sbj/media_player/Assets/TestSiren.mp3");
+        Playlist.getInstance().add(test);
+        playLibrary(Playlist.getInstance().getPlaylist());
+
+        String fileCheck = MP.getMedia().getSource().equals("./src/sbj/media_player/Assets/TestSiren.mp3") ? "Passed": "Failed";
+
+        String albumCheck = album.equals("TestAlbum") ? "Passed": "Failed";
+        String genreCheck = genre.equals("JUnitTesting") ? "Passed": "Failed";
+        String artistCheck = artist.equals("Tester") ? "Passed": "Failed";
+
+        System.out.println("===== Load Test =====");
+        System.out.println("TEST: fileCheck " + fileCheck);
+        System.out.println("TEST: albumCheck " + albumCheck);
+        System.out.println("TEST: genreCheck " + genreCheck);
+        System.out.println("TEST: artistCheck " + artistCheck);
+
+        //System.out.println(test);
+        //System.out.println(MP.getMedia().getSource());
+    }
+
+    private void playTest() {
+        // By the time this test is reached, the system has not started playing yet, but the audio plays to the tester
+        String statusCheck = (MP.getStatus() == MediaPlayer.Status.PLAYING) ? "Passed": "Failed";
+        System.out.println("===== Play Test =====");
+        System.out.println("TEST: statusCheck " + statusCheck);
+    }
+
+    private void durationTest() {
+        // By the time this test is reached, the system has not started playing yet, but the audio plays to the tester
+        Duration testdura = new Duration(0);
+        int check = testdura.compareTo(MP.getCurrentTime());
+        String durationCheck = (check > 0) ? "Passed": "Failed";
+        System.out.println("===== Duration Test =====");
+        System.out.println("TEST: durationCheck " + durationCheck + " - Test Value: " + String.valueOf(check));
+    }
 }
+
