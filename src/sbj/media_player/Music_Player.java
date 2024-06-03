@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
+import java.util.concurrent.TimeUnit;
 
+import javafx.stage.FileChooser;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
@@ -355,4 +357,50 @@ public class Music_Player {
             System.out.println("No media is Playing");
         }
     }
+    @FXML
+    protected void runTests() {
+        System.out.println("Beginning Testing");
+        this.loadTest();
+        this.playTest();
+        this.durationTest();
+        //assert
+    }
+
+    private void loadTest() {
+        File test = new File("./src/sbj/media_player/Assets/TestSiren.mp3");
+        Playlist.getInstance().add(test);
+        playLibrary(Playlist.getInstance().getPlaylist());
+
+        String fileCheck = MP.getMedia().getSource().equals("./src/sbj/media_player/Assets/TestSiren.mp3") ? "Passed": "Failed";
+
+        String albumCheck = album.equals("TestAlbum") ? "Passed": "Failed";
+        String genreCheck = genre.equals("JUnitTesting") ? "Passed": "Failed";
+        String artistCheck = artist.equals("Tester") ? "Passed": "Failed";
+
+        System.out.println("===== Load Test =====");
+        System.out.println("TEST: fileCheck " + fileCheck);
+        System.out.println("TEST: albumCheck " + albumCheck);
+        System.out.println("TEST: genreCheck " + genreCheck);
+        System.out.println("TEST: artistCheck " + artistCheck);
+
+        //System.out.println(test);
+        //System.out.println(MP.getMedia().getSource());
+    }
+
+    private void playTest() {
+        // By the time this test is reached, the system has not started playing yet, but the audio plays to the tester
+        String statusCheck = (MP.getStatus() == MediaPlayer.Status.PLAYING) ? "Passed": "Failed";
+        System.out.println("===== Play Test =====");
+        System.out.println("TEST: statusCheck " + statusCheck);
+    }
+
+    private void durationTest() {
+        // By the time this test is reached, the system has not started playing yet, but the audio plays to the tester
+        Duration testdura = new Duration(0);
+        int check = testdura.compareTo(MP.getCurrentTime());
+        String durationCheck = (check > 0) ? "Passed": "Failed";
+        System.out.println("===== Duration Test =====");
+        System.out.println("TEST: durationCheck " + durationCheck + " - Test Value: " + String.valueOf(check));
+    }
 }
+
