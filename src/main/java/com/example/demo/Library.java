@@ -12,13 +12,15 @@ import javafx.scene.control.TreeItem.TreeModificationEvent;
 import javafx.scene.control.TreeView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Alert;
 
 public class Library {
     @FXML
     private TreeView<File> treeView;
     private TreeItem<File> root;
     private Set<File> songSet;
-
+    Alert alert = new Alert(AlertType.ERROR);
 
     @FXML
     private void initialize() {
@@ -57,7 +59,12 @@ public class Library {
     protected void selectFile() {
         FileChooser file = new FileChooser();
         File song = file.showOpenDialog(null);
-        if (song != null) {
+        if (!song.getName().toLowerCase().endsWith(".mp3")) {
+            alert.setHeaderText("Invalid Format Type");
+            alert.setContentText("File format must be .mp3");
+            alert.showAndWait();
+        }
+        else if (song != null) {
             if (!songSet.contains(song)) {
                 TreeItem<File> item = new TreeItem<>(song);
                 root.getChildren().add(item);

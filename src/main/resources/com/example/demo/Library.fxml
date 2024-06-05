@@ -10,19 +10,25 @@
 <Pane fx:id="libraryPane" prefHeight="475.0" prefWidth="310.0" stylesheets="@style.css"
       xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Library">
     <children>
-        <Button alignment="CENTER" layoutX="229.0" layoutY="430.0" mnemonicParsing="false" onAction="#selectFolder">
+        <Button alignment="CENTER" layoutX="229.0" layoutY="436.0" mnemonicParsing="false" onAction="#selectFolder">
             <graphic>
                 <ImageView fitHeight="30" fitWidth="30">
                     <image>
-                        <Image url="file:src/main/resources/com/example/demo/Assets/open_file-01.png"/>
+                        <Image url="file:src\main\resources\com\example\demo\Assets\folder_upload_icon.png"/>
                     </image>
                 </ImageView>
             </graphic>
         </Button>
-        <Button alignment="CENTER" layoutX="45.0" layoutY="436.0" mnemonicParsing="false" onAction="#selectFile"
-                text="Select File"/>
-        <Button alignment="CENTER" layoutX="154.0" layoutY="436.0" mnemonicParsing="false" onAction="#selectMusic"
-                text="Add"/>
+        <Button alignment="CENTER" layoutX="45.0" layoutY="436.0" mnemonicParsing="false" onAction="#selectFile">
+         <graphic>
+                <ImageView fitHeight="30" fitWidth="30">
+                    <image>
+                        <Image url="file:src\main\resources\com\example\demo\Assets\open_file-01.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+         <Button alignment="CENTER" layoutX="105.0" layoutY="440.0" mnemonicParsing="false" onAction="#selectMusic" text="Add to Playlist" />
         <TreeView fx:id="treeView" layoutY="36.0" prefHeight="375.0" prefWidth="310.0"/>
         <Label layoutX="137.0" layoutY="14.0" text="Library"/>
     </children>
